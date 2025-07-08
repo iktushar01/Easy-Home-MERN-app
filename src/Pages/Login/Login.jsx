@@ -4,8 +4,14 @@ import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
 import { Link } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = data =>{
+    console.log(data);
+  }
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -44,7 +50,7 @@ const Login = () => {
           <h1 className="text-3xl font-bold  mb-2">Login</h1>
           <p className=" mb-8">Please enter your credentials</p>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               {/* Email Field */}
               <div className="relative">
@@ -53,6 +59,7 @@ const Login = () => {
                 </div>
                 <input
                   type="email"
+                  {...register('email')}
                   placeholder="Email Address"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -66,6 +73,7 @@ const Login = () => {
                 </div>
                 <input
                   type="password"
+                   {...register('password')}
                   placeholder="Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
