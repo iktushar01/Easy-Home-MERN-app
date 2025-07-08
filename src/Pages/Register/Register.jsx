@@ -3,44 +3,57 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
 import { Link } from "react-router";
+import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 
 const Register = () => {
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
+    <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
-      <div 
+      <div
         className="w-full md:w-1/2 relative bg-cover bg-center flex items-center justify-center p-8"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')" }}
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')",
+        }}
       >
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/80"></div>
-        
+
         <div className="text-white  flex justify-center items-center flex-col text-center relative z-10">
-          <div><Logo className="text-white" /></div>
+          <div className="flex gap-3">
+            <div>
+              <Logo className="text-white" />
+            </div>
+            <ThemeToggle />
+          </div>
           <h2 className="text-5xl font-bold mt-6">Create Account</h2>
           <p className="my-2 text-blue-100">
             Join us to find your perfect property
           </p>
           <div className=" flex gap-2">
-           <Link to='/login'> <button className="btn btn-primary">login</button></Link>
-            <Link to='/register'><button className="btn btn-primary">Register</button></Link>
-            
+            <Link to="/login">
+              {" "}
+              <button className="btn btn-primary">login</button>
+            </Link>
+            <Link to="/register">
+              <button className="btn btn-primary">Register</button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Right Side - Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Register</h1>
-          <p className="text-gray-600 mb-8">Create your account</p>
+        <div className="w-full bg-base-200 max-w-md  rounded-lg shadow-lg p-8">
+          <h1 className="text-3xl font-bold  mb-2">Register</h1>
+          <p className=" mb-8">Create your account</p>
 
           <form className="space-y-6">
             <div className="space-y-4">
               {/* Name Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaUser className="h-5 w-5 text-gray-400" />
+                  <FaUser className="h-5 w-5 " />
                 </div>
                 <input
                   type="text"
@@ -53,7 +66,7 @@ const Register = () => {
               {/* Email Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MdEmail className="h-5 w-5 text-gray-400" />
+                  <MdEmail className="h-5 w-5 " />
                 </div>
                 <input
                   type="email"
@@ -66,7 +79,7 @@ const Register = () => {
               {/* Password Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" />
+                  <FaLock className="h-5 w-5" />
                 </div>
                 <input
                   type="password"
@@ -79,7 +92,7 @@ const Register = () => {
               {/* Confirm Password Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" />
+                  <FaLock className="h-5 w-5 " />
                 </div>
                 <input
                   type="password"
@@ -100,21 +113,11 @@ const Register = () => {
             </div>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-          </div>
+      <div className="divider">OR</div>
+
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm ">
               Already have an account?{" "}
               <a
                 href="/login"
