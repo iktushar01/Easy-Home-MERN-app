@@ -6,14 +6,14 @@ const Logo = () => {
   return (
     <Link 
       to="/" 
-      className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+      className="flex items-center hover:opacity-80 transition-opacity"
     >
       <img 
         src={logoImg} 
-        alt="RealTerra Logo" 
-        className="h-9 w-9 object-contain" 
+        alt="EasyHome  Logo" 
+        className="h-10 w-10 object-contain" 
       />
-      <span className="text-xl font-semibold text-blue-600">RealTerra</span>
+      <span className="text-xl font-semibold text-primary">EasyHome</span>
     </Link>
   );
 };
