@@ -1,53 +1,84 @@
-import React from 'react';
-import ThemeToggle from '../ThemeToggle/ThemeToggle';
+import React, { useState } from "react";
+import { FaHome, FaBuilding, FaChartBar, FaSignInAlt, FaInfoCircle } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import Logo from "../Logo/Logo";
 
 const Navbar = () => {
-    return (
-        <div>
-            <div className="navbar bg-base-100 shadow-sm">
-  <div className="navbar-start">
-    <div className="dropdown">
-      <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-      </div>
-      <ul
-        tabIndex={0}
-        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Item 1</a></li>
-        <li>
-          <a>Parent</a>
-          <ul className="p-2">
-            <li><a>Submenu 1</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </li>
-        <li><a>Item 3</a></li>
-      </ul>
-    </div>
-    <a className="btn btn-ghost text-xl">daisyUI</a>
-  </div>
-  <div className="navbar-center hidden lg:flex">
-    <ul className="menu menu-horizontal px-1">
-      <li><a>Item 1</a></li>
-      <li>
-        <details>
-          <summary>Parent</summary>
-          <ul className="p-2">
-            <li><a>Submenu 1</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </details>
-      </li>
-      <li><a>Item 3</a></li>
-    </ul>
-  </div>
-  <div className="navbar-end">
-    <ThemeToggle/>
-    <a className="btn">Button</a>
-  </div>
-</div>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <nav className="w-full bg-base-100 shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+            <Logo/>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="/" className="flex items-center hover:text-blue-400 ">
+              <FaHome className="mr-2" /> Home
+            </a>
+            <a href="/about" className="flex items-center hover:text-blue-400 ">
+              <FaInfoCircle className="mr-2" /> About
+            </a>
+            <a href="/properties" className="flex items-center hover:text-blue-400 ">
+              <FaBuilding className="mr-2" /> All Properties
+            </a>
+            <a href="/dashboard" className="flex items-center  hover:text-blue-400">
+              <FaChartBar className="mr-2" /> Dashboard
+            </a>
+            <a href="/login" className="flex items-center  hover:text-blue-400 ">
+              <FaSignInAlt className="mr-2" /> Login
+            </a>
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <ThemeToggle />
+            <button
+              onClick={toggleMenu}
+              className="focus:outline-none ml-4"
+            >
+              {isMenuOpen ? (
+                <IoClose className="h-6 w-6" />
+              ) : (
+                <GiHamburgerMenu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
-    );
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 z-50 relative">
+            <div className="flex flex-col space-y-3">
+              <a href="/" className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md">
+                <FaHome className="mr-2" /> Home
+              </a>
+              <a href="/about" className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md">
+                <FaInfoCircle className="mr-2" /> About
+              </a>
+              <a href="/properties" className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md">
+                <FaBuilding className="mr-2" /> All Properties
+              </a>
+              <a href="/dashboard" className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md">
+                <FaChartBar className="mr-2" /> Dashboard
+              </a>
+              <a href="/login" className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md">
+                <FaSignInAlt className="mr-2" /> Login
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
