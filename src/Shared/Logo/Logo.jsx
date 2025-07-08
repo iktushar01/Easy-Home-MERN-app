@@ -4,12 +4,17 @@ import logoImg from "../../assets/Logo/buildings.png";
 
 const Logo = () => {
   return (
-    <div className="flex items-center">
-      <Link to="/" className="flex items-center space-x-2">
-        <img src={logoImg} alt="RealTerra Logo" className="h-8 w-8 object-contain" />
-        <span className="text-2xl font-bold text-blue-400">RealTerra</span>
-      </Link>
-    </div>
+    <Link 
+      to="/" 
+      className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+    >
+      <img 
+        src={logoImg} 
+        alt="RealTerra Logo" 
+        className="h-9 w-9 object-contain" 
+      />
+      <span className="text-xl font-semibold text-blue-600">RealTerra</span>
+    </Link>
   );
 };
 

@@ -12,7 +12,7 @@ const Register = () => {
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')" }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 bg-black/80"></div>
         
         <div className="text-white  flex justify-center items-center flex-col text-center relative z-10">
           <div><Logo className="text-white" /></div>
