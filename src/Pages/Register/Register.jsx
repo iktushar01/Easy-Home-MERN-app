@@ -4,8 +4,14 @@ import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
 import { Link } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = data =>{
+    console.log(data);
+  }
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -48,7 +54,7 @@ const Register = () => {
           <h1 className="text-3xl font-bold  mb-2">Register</h1>
           <p className=" mb-8">Create your account</p>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               {/* Name Field */}
               <div className="relative">
@@ -57,6 +63,7 @@ const Register = () => {
                 </div>
                 <input
                   type="text"
+                  {...register('fullName')}
                   placeholder="Full Name"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -70,6 +77,7 @@ const Register = () => {
                 </div>
                 <input
                   type="email"
+                  {...register('email')}
                   placeholder="Email Address"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -83,6 +91,7 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
+                  {...register('password')}
                   placeholder="Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -96,6 +105,7 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
+                  {...register('confirmPassword')}
                   placeholder="Confirm Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -113,8 +123,7 @@ const Register = () => {
             </div>
           </form>
 
-      <div className="divider">OR</div>
-
+          <div className="divider">OR</div>
 
           <div className="mt-6 text-center">
             <p className="text-sm ">
