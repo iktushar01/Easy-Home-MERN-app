@@ -1,9 +1,9 @@
 import React from "react";
-import { FaLock } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
       {/* Left Side - Image */}
@@ -14,11 +14,11 @@ const Login = () => {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         
-        <div className="text-white flex justify-center items-center flex-col text-center relative z-10">
+        <div className="text-white  flex justify-center items-center flex-col text-center relative z-10">
           <div><Logo className="text-white" /></div>
-          <h2 className="text-5xl font-bold mt-6">Welcome Back</h2>
+          <h2 className="text-5xl font-bold mt-6">Create Account</h2>
           <p className="mt-2 text-blue-100">
-            Find your perfect property with us
+            Join us to find your perfect property
           </p>
         </div>
       </div>
@@ -26,11 +26,24 @@ const Login = () => {
       {/* Right Side - Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Login</h1>
-          <p className="text-gray-600 mb-8">Please enter your credentials</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Register</h1>
+          <p className="text-gray-600 mb-8">Create your account</p>
 
           <form className="space-y-6">
             <div className="space-y-4">
+              {/* Name Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaUser className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  required
+                />
+              </div>
+
               {/* Email Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -56,31 +69,18 @@ const Login = () => {
                   required
                 />
               </div>
-            </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
+              {/* Confirm Password Field */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-gray-400" />
+                </div>
                 <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  required
                 />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700"
-                >
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Forgot password?
-                </a>
               </div>
             </div>
 
@@ -89,7 +89,7 @@ const Login = () => {
                 type="submit"
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
               >
-                Sign in
+                Register
               </button>
             </div>
           </form>
@@ -109,12 +109,12 @@ const Login = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <a
-                href="/register"
+                href="/login"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
-                Sign up
+                Login
               </a>
             </p>
           </div>
@@ -124,4 +124,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
