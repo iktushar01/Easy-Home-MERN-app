@@ -2,6 +2,7 @@ import React from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
+import { Link } from "react-router";
 
 const Register = () => {
   return (
@@ -17,9 +18,14 @@ const Register = () => {
         <div className="text-white  flex justify-center items-center flex-col text-center relative z-10">
           <div><Logo className="text-white" /></div>
           <h2 className="text-5xl font-bold mt-6">Create Account</h2>
-          <p className="mt-2 text-blue-100">
+          <p className="my-2 text-blue-100">
             Join us to find your perfect property
           </p>
+          <div className=" flex gap-2">
+           <Link to='/login'> <button className="btn btn-primary">login</button></Link>
+            <Link to='/register'><button className="btn btn-primary">Register</button></Link>
+            
+          </div>
         </div>
       </div>
 
