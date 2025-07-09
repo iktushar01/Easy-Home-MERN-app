@@ -5,13 +5,22 @@ import Logo from "../../Shared/Logo/Logo";
 import { Link } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
+  const { createUser } = useAuth();
 
-  const onSubmit = data =>{
+  const onSubmit = (data) => {
     console.log(data);
-  }
+    createUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -63,7 +72,7 @@ const Register = () => {
                 </div>
                 <input
                   type="text"
-                  {...register('fullName')}
+                  {...register("fullName")}
                   placeholder="Full Name"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -77,7 +86,7 @@ const Register = () => {
                 </div>
                 <input
                   type="email"
-                  {...register('email')}
+                  {...register("email")}
                   placeholder="Email Address"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -91,7 +100,7 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
-                  {...register('password')}
+                  {...register("password")}
                   placeholder="Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -105,7 +114,7 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
-                  {...register('confirmPassword')}
+                  {...register("confirmPassword")}
                   placeholder="Confirm Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
@@ -128,12 +137,12 @@ const Register = () => {
           <div className="mt-6 text-center">
             <p className="text-sm ">
               Already have an account?{" "}
-              <a
-                href="/login"
-                className="font-medium text-blue-600 hover:text-blue-500"
+              <Link
+                to="/login"
+                className="font-medium text-primary hover:underline"
               >
                 Login
-              </a>
+              </Link>
             </p>
           </div>
         </div>
