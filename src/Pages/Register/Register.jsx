@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
@@ -133,6 +134,8 @@ const Register = () => {
           </form>
 
           <div className="divider">OR</div>
+
+          <GoogleLogin/>
 
           <div className="mt-6 text-center">
             <p className="text-sm ">

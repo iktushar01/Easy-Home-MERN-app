@@ -5,13 +5,24 @@ import Logo from "../../Shared/Logo/Logo";
 import { Link } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
+
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
+  const { signInUser } = useAuth();
 
-  const onSubmit = data =>{
+  const onSubmit = (data) => {
     console.log(data);
-  }
+    signInUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -118,6 +129,8 @@ const Login = () => {
           </form>
 
             <div className="divider">OR</div>
+
+            <GoogleLogin/>
 
 
           <div className="mt-6 text-center">
