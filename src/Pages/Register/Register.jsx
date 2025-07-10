@@ -2,7 +2,7 @@ import React from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
@@ -11,12 +11,17 @@ import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 const Register = () => {
   const { register, handleSubmit } = useForm();
   const { createUser } = useAuth();
+  const location = useLocation();
+  console.log(location);
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        navigate(from);
       })
       .catch((error) => {
         console.error(error);
@@ -135,7 +140,7 @@ const Register = () => {
 
           <div className="divider">OR</div>
 
-          <GoogleLogin/>
+          <GoogleLogin from={from} />
 
           <div className="mt-6 text-center">
             <p className="text-sm ">
