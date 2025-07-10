@@ -5,9 +5,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import Logo from "../Logo/Logo";
+import LogOutBtn from "../../Componens/Buttons/LogOutBtn";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -55,13 +58,19 @@ const Navbar = () => {
             >
               <FaChartBar className="mr-2" /> Dashboard
             </NavLink>
-            <NavLink 
-              to="/login" 
-              className="flex items-center hover:text-blue-400"
-              style={({ isActive }) => isActive ? activeStyle : undefined}
-            >
-              <FaSignInAlt className="mr-2" /> Login
-            </NavLink>
+
+            {user ? (
+              <LogOutBtn />
+            ) : (
+              <NavLink 
+                to="/login" 
+                className="flex items-center hover:text-blue-400 btn btn-primary"
+                style={({ isActive }) => isActive ? activeStyle : undefined}
+              >
+                <FaSignInAlt className="mr-2" /> Login
+              </NavLink>
+            )}
+
             <ThemeToggle />
           </div>
 
@@ -117,14 +126,21 @@ const Navbar = () => {
               >
                 <FaChartBar className="mr-2" /> Dashboard
               </NavLink>
-              <NavLink 
-                to="/login" 
-                className="flex items-center hover:text-blue-400 px-3 py-2 rounded-md"
-                style={({ isActive }) => isActive ? activeStyle : undefined}
-                onClick={toggleMenu}
-              >
-                <FaSignInAlt className="mr-2" /> Login
-              </NavLink>
+
+              {user ? (
+                <div className="px-3 py-2">
+                  <LogOutBtn />
+                </div>
+              ) : (
+                <NavLink 
+                  to="/login" 
+                  className="flex items-center hover:text-blue-400 px-3 py-2 btn btn-primary rounded-md"
+                  style={({ isActive }) => isActive ? activeStyle : undefined}
+                  onClick={toggleMenu}
+                >
+                  <FaSignInAlt className="mr-2" /> Login
+                </NavLink>
+              )}
             </div>
           </div>
         )}
