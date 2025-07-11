@@ -10,40 +10,50 @@ import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
   const { createUser } = useAuth();
   const location = useLocation();
-  console.log(location);
   const navigate = useNavigate();
   const from = location.state?.from || "/";
   const axiosSecure = useAxiosSecure();
 
+  const password = watch("password"); // পাসওয়ার্ড ফিল্ডের মান দেখার জন্য
+
   const onSubmit = (data) => {
+    // ডাটা কনসোল লগ করে দেখতে পারেন
     console.log(data);
+
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
 
         const userInfo = {
-        name: data.fullName,
-        email: data.email,
-        role: "user",
-      };
+          name: data.fullName,
+          email: data.email,
+          role: "user",
+        };
 
-      axiosSecure
-        .post("/users", userInfo)
-        .then((res) => {
-          console.log("User saved in DB:", res.data);
-          navigate(from, { replace: true });
-        })
-        .catch((err) => {
-          console.error("Failed to save user in DB", err);
-        });
+        axiosSecure
+          .post("/users", userInfo)
+          .then((res) => {
+            console.log("User saved in DB:", res.data);
+            navigate(from, { replace: true });
+          })
+          .catch((err) => {
+            console.error("Failed to save user in DB", err);
+          });
       })
       .catch((error) => {
         console.error(error);
       });
   };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -95,11 +105,15 @@ const Register = () => {
                 </div>
                 <input
                   type="text"
-                  {...register("fullName")}
+                  {...register("fullName", { required: "Full name is required" })}
                   placeholder="Full Name"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  required
                 />
+                {errors.fullName && (
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.fullName.message}
+                  </p>
+                )}
               </div>
 
               {/* Email Field */}
@@ -109,11 +123,19 @@ const Register = () => {
                 </div>
                 <input
                   type="email"
-                  {...register("email")}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Invalid email address",
+                    },
+                  })}
                   placeholder="Email Address"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  required
                 />
+                {errors.email && (
+                  <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                )}
               </div>
 
               {/* Password Field */}
@@ -123,11 +145,19 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
-                  {...register("password")}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
                   placeholder="Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  required
                 />
+                {errors.password && (
+                  <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>
+                )}
               </div>
 
               {/* Confirm Password Field */}
@@ -137,11 +167,19 @@ const Register = () => {
                 </div>
                 <input
                   type="password"
-                  {...register("confirmPassword")}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
                   placeholder="Confirm Password"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  required
                 />
+                {errors.confirmPassword && (
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
             </div>
 
