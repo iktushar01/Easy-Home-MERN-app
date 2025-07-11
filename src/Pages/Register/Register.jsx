@@ -105,7 +105,9 @@ const Register = () => {
                 </div>
                 <input
                   type="text"
-                  {...register("fullName", { required: "Full name is required" })}
+                  {...register("fullName", {
+                    required: "Full name is required",
+                  })}
                   placeholder="Full Name"
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                 />
@@ -134,7 +136,9 @@ const Register = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                 />
                 {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
 
@@ -156,7 +160,9 @@ const Register = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                 />
                 {errors.password && (
-                  <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
