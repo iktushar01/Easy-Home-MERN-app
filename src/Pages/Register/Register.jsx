@@ -7,6 +7,7 @@ import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
@@ -15,13 +16,29 @@ const Register = () => {
   console.log(location);
   const navigate = useNavigate();
   const from = location.state?.from || "/";
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate(from);
+
+        const userInfo = {
+        name: data.fullName,
+        email: data.email,
+        role: "user",
+      };
+
+      axiosSecure
+        .post("/users", userInfo)
+        .then((res) => {
+          console.log("User saved in DB:", res.data);
+          navigate(from, { replace: true });
+        })
+        .catch((err) => {
+          console.error("Failed to save user in DB", err);
+        });
       })
       .catch((error) => {
         console.error(error);
