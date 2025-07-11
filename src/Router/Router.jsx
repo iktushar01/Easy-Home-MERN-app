@@ -4,30 +4,43 @@ import HomePage from "../Pages/HomePage/HomePage";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import DashBoardLayout from "../Layouts/DashBoardLayout";
+import AgentDashBoard from "../Pages/DashBoard/AgentDashBoard";
+import AdminDashBoard from "../Pages/DashBoard/AdminDashBoard";
+import UserDashBoard from "../Pages/DashBoard/UserDashBoard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout/>,
+    element: <MainLayout />,
     children: [
       {
         index: true,
-        element: <HomePage/>
+        element: <HomePage />,
       },
-    ]
+    ],
   },
   {
     path: "/",
-    element: <AuthLayout/>,
+    element: <AuthLayout />,
     children: [
       {
-        path:"/login",
-        element:<Login/>
+        path: "/login",
+        element: <Login />,
       },
       {
-        path:"/register",
-        element:<Register/>
-      }
-    ]
-  }
+        path: "/register",
+        element: <Register />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashBoardLayout />,
+    children: [
+      { path: "admin", element: <AdminDashBoard /> },
+      { path: "agent", element: <AgentDashBoard /> },
+      { path: "user", element: <UserDashBoard /> },
+    ],
+  },
 ]);
