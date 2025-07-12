@@ -8,6 +8,7 @@ import DashBoardLayout from "../Layouts/DashBoardLayout";
 import AgentDashBoard from "../Pages/DashBoard/AgentDashBoard";
 import AdminDashBoard from "../Pages/DashBoard/AdminDashBoard";
 import UserDashBoard from "../Pages/DashBoard/UserDashBoard";
+import PrivateRoute from "../Routes/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -36,7 +37,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashBoardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashBoardLayout />
+      </PrivateRoute>
+    ),
     children: [
       { path: "admin", element: <AdminDashBoard /> },
       { path: "agent", element: <AgentDashBoard /> },

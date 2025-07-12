@@ -26,6 +26,9 @@ const DashBoardLayout = () => {
           } else if (userRole === 'user' && !currentPath.includes('/dashboard/user')) {
             navigate('/dashboard/user');
           }
+          else if (userRole === 'agent' && !currentPath.includes('/dashboard/agent')) {
+            navigate('/dashboard/agent');
+          } 
         })
         .catch(err => {
           console.error('❌ Failed to fetch role:', err);
