@@ -15,6 +15,7 @@ import AddProperty from "../Pages/AgentPages/AddProperty/AddProperty";
 import MyProperty from "../Pages/AgentPages/MyProperty/MyProperty";
 import SoldProperties from "../Pages/AgentPages/SoldProperties/SoldProperties";
 import RequestedProperties from "../Pages/AgentPages/RequestedProperties/RequestedProperties";
+import AllProperties from "../Pages/AllProperties/AllProperties";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
+      {
+        path:"properties",
+        element:<AllProperties/>,
+      }
     ],
   },
   {
