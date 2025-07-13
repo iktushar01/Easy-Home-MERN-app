@@ -2,8 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
-
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const AddProperty = () => {
+  const axiosSecure = useAxiosSecure();
+
   const { user } = useAuth();
   const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -39,11 +41,22 @@ const AddProperty = () => {
 
       console.log("Property Data to Save:", propertyData);
 
-      // ✅ Here: Send propertyData to Firebase or your database...
+      // ✅ Post to your backend/database
+      const saveRes = await axiosSecure.post(
+        "/properties",
+        propertyData
+      );
 
-      reset();
+      if (saveRes.data.result?.insertedId)
+ {
+        alert("Property added successfully!");
+        reset();
+      } else {
+        alert("Failed to save property.");
+      }
     } catch (error) {
-      console.error("Image upload failed:", error);
+      console.error("Error adding property:", error);
+      alert("Something went wrong!");
     }
   };
 
