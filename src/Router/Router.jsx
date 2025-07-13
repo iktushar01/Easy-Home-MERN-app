@@ -10,6 +10,7 @@ import AdminDashBoard from "../Pages/DashBoard/AdminDashBoard";
 import UserDashBoard from "../Pages/DashBoard/UserDashBoard";
 import PrivateRoute from "../Routes/PrivateRoute";
 import MyProfile from "../Pages/UserPages/MyProfile/MyProfile";
+import AgentProfile from "../Pages/AgentPages/AgentProfile/AgentProfile";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,12 @@ export const router = createBrowserRouter([
       },
       { path: "agent",
         element: <AgentDashBoard />,
+        children: [
+          {
+            path:"profile",
+            element:<AgentProfile/>,
+          }
+        ]
 
       },
       { path: "user",

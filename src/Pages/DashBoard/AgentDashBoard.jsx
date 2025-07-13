@@ -8,7 +8,7 @@ const AgentDashboard = () => {
             <div className="w-1/3 bg-gray-100 p-4 border-r">
                 <h2 className="text-xl font-bold mb-6">Agent Dashboard</h2>
                 <nav className="flex flex-col space-y-4">
-                    <NavLink to="AgentProfile" className={({ isActive }) => isActive ? "text-blue-600 font-semibold" : "text-gray-700"}>
+                    <NavLink to="profile" className={({ isActive }) => isActive ? "text-blue-600 font-semibold" : "text-gray-700"}>
                         Agent Profile
                     </NavLink>
                     <NavLink to="add-property" className={({ isActive }) => isActive ? "text-blue-600 font-semibold" : "text-gray-700"}>
