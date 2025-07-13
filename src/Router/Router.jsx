@@ -11,6 +11,7 @@ import UserDashBoard from "../Pages/DashBoard/UserDashBoard";
 import PrivateRoute from "../Routes/PrivateRoute";
 import MyProfile from "../Pages/UserPages/MyProfile/MyProfile";
 import AgentProfile from "../Pages/AgentPages/AgentProfile/AgentProfile";
+import AddProperty from "../Pages/AgentPages/AddProperty/AddProperty";
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +56,23 @@ export const router = createBrowserRouter([
           {
             path:"profile",
             element:<AgentProfile/>,
-          }
+          },
+          {
+            path: "add-property",
+            element:<AddProperty/>
+          },
+          {
+            path: "my-properties",
+            element:<AddProperty/>
+          },
+          {
+            path: "sold-properties",
+            element:<AddProperty/>
+          },
+          {
+            path: "requested-properties",
+            element:<AddProperty/>
+          },
         ]
 
       },
