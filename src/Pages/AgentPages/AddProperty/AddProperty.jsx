@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 const AddProperty = () => {
   const axiosSecure = useAxiosSecure();
-
   const { user } = useAuth();
   const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -18,8 +18,6 @@ const AddProperty = () => {
 
   const onSubmit = async (data) => {
     const imageFile = data.image[0];
-
-    // Upload image to imgbb
     const formData = new FormData();
     formData.append("image", imageFile);
 
@@ -32,6 +30,7 @@ const AddProperty = () => {
 
       const propertyData = {
         title: data.title,
+        description: data.description,
         location: data.location,
         priceRange: data.priceRange,
         image: imageUrl,
@@ -39,16 +38,9 @@ const AddProperty = () => {
         agentEmail: user?.email || "",
       };
 
-      console.log("Property Data to Save:", propertyData);
+      const saveRes = await axiosSecure.post("/properties", propertyData);
 
-      // ✅ Post to your backend/database
-      const saveRes = await axiosSecure.post(
-        "/properties",
-        propertyData
-      );
-
-      if (saveRes.data.result?.insertedId)
- {
+      if (saveRes.data.result?.insertedId) {
         alert("Property added successfully!");
         reset();
       } else {
@@ -61,99 +53,115 @@ const AddProperty = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-base-100 shadow-lg rounded-box">
+      <h2 className="text-3xl font-bold text-center text-primary mb-6">
         Add Property
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Property Title */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Property Title
+          <label className="label">
+            <span className="label-text">Property Title</span>
           </label>
           <input
             {...register("title", { required: true })}
             type="text"
             placeholder="Enter property title"
-            className="w-full border rounded-lg px-4 py-2"
+            className="input input-bordered w-full"
           />
           {errors.title && (
-            <p className="text-red-500 text-sm mt-1">Title is required.</p>
+            <p className="text-sm text-error mt-1">Title is required.</p>
           )}
         </div>
 
-        {/* Property Location */}
+        {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Location
+          <label className="label">
+            <span className="label-text">Description</span>
+          </label>
+          <textarea
+            {...register("description", { required: true })}
+            rows={4}
+            placeholder="Enter property description"
+            className="textarea textarea-bordered w-full"
+          />
+          {errors.description && (
+            <p className="text-sm text-error mt-1">Description is required.</p>
+          )}
+        </div>
+
+        {/* Location */}
+        <div>
+          <label className="label">
+            <span className="label-text">Location</span>
           </label>
           <input
             {...register("location", { required: true })}
             type="text"
             placeholder="Enter location"
-            className="w-full border rounded-lg px-4 py-2"
+            className="input input-bordered w-full"
           />
           {errors.location && (
-            <p className="text-red-500 text-sm mt-1">Location is required.</p>
+            <p className="text-sm text-error mt-1">Location is required.</p>
           )}
         </div>
 
-        {/* Property Image */}
+        {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Property Image
+          <label className="label">
+            <span className="label-text">Property Image</span>
           </label>
           <input
             {...register("image", { required: true })}
             type="file"
             accept="image/*"
-            className="w-full"
+            className="file-input file-input-bordered w-full"
           />
           {errors.image && (
-            <p className="text-red-500 text-sm mt-1">Image is required.</p>
+            <p className="text-sm text-error mt-1">Image is required.</p>
           )}
         </div>
 
-        {/* Agent Name (readonly) */}
+        {/* Agent Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Agent Name
+          <label className="label">
+            <span className="label-text">Agent Name</span>
           </label>
           <input
             type="text"
             value={user?.displayName || ""}
             readOnly
-            className="w-full border rounded-lg px-4 py-2 bg-gray-100 text-gray-500"
+            className="input input-disabled w-full"
           />
         </div>
 
-        {/* Agent Email (readonly) */}
+        {/* Agent Email */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Agent Email
+          <label className="label">
+            <span className="label-text">Agent Email</span>
           </label>
           <input
             type="email"
             value={user?.email || ""}
             readOnly
-            className="w-full border rounded-lg px-4 py-2 bg-gray-100 text-gray-500"
+            className="input input-disabled w-full"
           />
         </div>
 
         {/* Price Range */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price Range
+          <label className="label">
+            <span className="label-text">Price Range</span>
           </label>
           <input
             {...register("priceRange", { required: true })}
             type="text"
             placeholder="e.g. $1000 - $2000"
-            className="w-full border rounded-lg px-4 py-2"
+            className="input input-bordered w-full"
           />
           {errors.priceRange && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-sm text-error mt-1">
               Price range is required.
             </p>
           )}
@@ -161,10 +169,7 @@ const AddProperty = () => {
 
         {/* Submit Button */}
         <div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-          >
+          <button type="submit" className="btn btn-primary w-full">
             Add Property
           </button>
         </div>
