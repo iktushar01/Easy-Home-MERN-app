@@ -77,9 +77,9 @@ const AdvertisementSection = () => {
                 {property.priceRange}
               </p>
 
-              <button className="btn btn-primary btn-sm w-full mt-4">
-                Details
-              </button>
+              <Link to={`/properties/${property._id}`}>
+                <button className="btn btn-primary w-full">Details</button>
+              </Link>
             </div>
           </div>
         ))}

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaMapMarkerAlt, FaMoneyBillWave, FaUser, FaEnvelope } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaMoneyBillWave,
+  FaUser,
+  FaEnvelope,
+  FaHeart,
+  FaStar,
+} from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AllPropertiesDetails = () => {
@@ -41,11 +48,18 @@ const AllPropertiesDetails = () => {
       </div>
     );
 
-  const { image, title, description, location, priceRange, agentName, agentEmail } =
-    property;
+  const {
+    image,
+    title,
+    description,
+    location,
+    priceRange,
+    agentName,
+    agentEmail,
+  } = property;
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-base-100 rounded-lg shadow-lg">
+    <div className="max-w-3xl mx-auto p-6 bg-base-100 rounded-lg shadow-lg dark:shadow-gray-700 transition-colors duration-300">
       {/* Image */}
       <div className="rounded-lg overflow-hidden shadow-md mb-6">
         <img
@@ -76,6 +90,19 @@ const AllPropertiesDetails = () => {
         </p>
       </div>
 
+      {/* Wishlist and Review Buttons */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <button className="btn btn-outline btn-primary flex items-center gap-2">
+          <FaHeart className="text-error" />
+          Add to Wishlist
+        </button>
+
+        <button className="btn btn-outline btn-accent flex items-center gap-2">
+          <FaStar className="text-yellow-500" />
+          Write a Review
+        </button>
+      </div>
+
       {/* Agent Info */}
       <div className="border-t border-base-content/20 pt-4">
         <h3 className="text-xl font-semibold text-secondary mb-3">Agent Info</h3>
@@ -88,12 +115,12 @@ const AllPropertiesDetails = () => {
         <p className="flex items-center gap-3">
           <FaEnvelope className="text-primary" />
           <span className="font-medium">Email:</span>{" "}
-          <a
-            href={`mailto:${agentEmail}`}
-            className="text-primary underline hover:text-secondary transition-colors"
+          <p
+            
+            className="text-primary hover:text-secondary transition-colors"
           >
             {agentEmail}
-          </a>
+          </p>
         </p>
       </div>
     </div>

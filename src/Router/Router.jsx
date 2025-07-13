@@ -29,11 +29,11 @@ export const router = createBrowserRouter([
       },
       {
         path:"properties",
-        element:<AllProperties/>,
+        element:<PrivateRoute><AllProperties/></PrivateRoute>,
       },
       {
         path:"properties/:id",
-        element:<AllPropertiesDetails/>,
+        element:<PrivateRoute><AllPropertiesDetails/></PrivateRoute>,
       },
     ],
   },
