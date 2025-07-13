@@ -23,10 +23,9 @@ const Register = () => {
   const from = location.state?.from || "/";
   const axiosSecure = useAxiosSecure();
 
-  const password = watch("password"); // পাসওয়ার্ড ফিল্ডের মান দেখার জন্য
+  const password = watch("password");
 
   const onSubmit = (data) => {
-    // ডাটা কনসোল লগ করে দেখতে পারেন
     console.log(data);
 
     createUser(data.email, data.password)

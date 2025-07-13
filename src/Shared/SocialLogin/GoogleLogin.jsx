@@ -13,24 +13,50 @@ const GoogleLogin = ({ from }) => {
     signInWithGoogle()
       .then((result) => {
         const user = result.user;
+        const email = user.email.toLowerCase(); // Consistent email
+
         const userInfo = {
           name: user.displayName,
-          email: user.email,
+          email,
           role: "user",
         };
 
-        axiosSecure
-          .post("/users", userInfo)
+        // Check if user exists
+        axiosSecure.get(`/users/${email}`)
           .then((res) => {
-            console.log("User saved in DB:", res.data);
-            navigate(from || "/", { replace: true });
+            if (res.data && res.status === 200) {
+              console.log("✅ User already exists:", res.data);
+              navigate(from || "/", { replace: true });
+            } else {
+              // New user: Save
+              axiosSecure.post("/users", userInfo)
+                .then((res) => {
+                  console.log("✅ New user saved:", res.data);
+                  navigate(from || "/", { replace: true });
+                })
+                .catch((err) => {
+                  console.error("❌ Failed to save user:", err);
+                });
+            }
           })
           .catch((err) => {
-            console.error("Failed to save user in DB", err);
+            if (err.response?.status === 404) {
+              // User not found – add user
+              axiosSecure.post("/users", userInfo)
+                .then((res) => {
+                  console.log("✅ New user saved:", res.data);
+                  navigate(from || "/", { replace: true });
+                })
+                .catch((err) => {
+                  console.error("❌ Failed to save user:", err);
+                });
+            } else {
+              console.error("❌ Error checking user existence:", err);
+            }
           });
       })
       .catch((error) => {
-        console.error("Google sign-in failed:", error);
+        console.error("❌ Google sign-in failed:", error);
       });
   };
 
