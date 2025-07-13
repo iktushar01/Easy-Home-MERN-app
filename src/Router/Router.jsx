@@ -17,6 +17,7 @@ import SoldProperties from "../Pages/AgentPages/SoldProperties/SoldProperties";
 import RequestedProperties from "../Pages/AgentPages/RequestedProperties/RequestedProperties";
 import AllProperties from "../Pages/AllProperties/AllProperties";
 import AllPropertiesDetails from "../Pages/AllProperties/AllPropertiesDetails";
+import WishList from "../Pages/UserPages/WishList/WishList";
 
 export const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <MyProfile />,
+          },
+          {
+            path: "wishlist",
+            element: <WishList />,
           },
         ]
       },

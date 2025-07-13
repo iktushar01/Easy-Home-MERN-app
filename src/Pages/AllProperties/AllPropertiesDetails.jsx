@@ -9,13 +9,32 @@ import {
   FaStar,
 } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const AllPropertiesDetails = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+  const handleAddToWishlist = async () => {
+  try {
+    const res = await axiosSecure.post("/wishlist", {
+      email: user?.email,
+      propertyId: id,
+      
+    });
+    toast.success(res.data.message || "Added to wishlist!");
+  } catch (error) {
+    toast.error("Failed to add to wishlist");
+    console.error(error);
+  }
+};
+
 
   useEffect(() => {
     axiosSecure
@@ -92,10 +111,14 @@ const AllPropertiesDetails = () => {
 
       {/* Wishlist and Review Buttons */}
       <div className="flex flex-wrap gap-4 mb-6">
-        <button className="btn btn-outline btn-primary flex items-center gap-2">
-          <FaHeart className="text-error" />
-          Add to Wishlist
-        </button>
+       <button
+  onClick={handleAddToWishlist}
+  className="btn btn-outline btn-primary flex items-center gap-2"
+>
+  <FaHeart className="text-error" />
+  Add to Wishlist
+</button>
+
 
         <button className="btn btn-outline btn-accent flex items-center gap-2">
           <FaStar className="text-yellow-500" />
