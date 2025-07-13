@@ -1,31 +1,54 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import {
+  FaMapMarkerAlt,
+  FaMoneyBillWave,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 const AllProperties = () => {
   const axiosSecure = useAxiosSecure();
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    axiosSecure.get("/properties")
-      .then(res => {
+    axiosSecure
+      .get("/properties")
+      .then((res) => {
         setProperties(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error fetching properties:", err);
       });
-  }, []);
+  }, [axiosSecure]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6">All Properties</h2>
+      <h2 className="text-3xl font-bold text-primary mb-6 text-center">
+        All Properties
+      </h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {properties.map(property => (
-          <div key={property._id} className="bg-white shadow-md rounded-lg overflow-hidden">
-            <img src={property.image} alt={property.title} className="w-full h-48 object-cover" />
-            <div className="p-4">
+        {properties.map((property) => (
+          <div
+            key={property._id}
+            className="bg-base-100 shadow-md rounded-box overflow-hidden"
+          >
+            <img
+              src={property.image}
+              alt={property.title}
+              className="w-full h-48 object-cover"
+            />
+
+            <div className="p-4 text-base-content">
               <h3 className="text-xl font-semibold mb-1">{property.title}</h3>
-              <p className="text-gray-600 mb-1">📍 {property.location}</p>
-              <div className="flex items-center gap-3 my-2">
+
+              <p className="flex items-center gap-1 text-sm mb-2">
+                <FaMapMarkerAlt className="text-primary" />
+                {property.location}
+              </p>
+
+              <div className="flex items-center gap-3 my-3">
                 <img
                   src={property.agentImage}
                   alt={property.agentName}
@@ -33,15 +56,28 @@ const AllProperties = () => {
                 />
                 <div>
                   <p className="font-medium">{property.agentName}</p>
-                  <p className="text-sm text-gray-500">
-                    {property.verificationStatus === "verified" ? "✅ Verified" : "❌ Not Verified"}
+                  <p className="text-sm flex items-center gap-1">
+                    {property.verificationStatus === "verified" ? (
+                      <>
+                        <FaCheckCircle className="text-success" />
+                        <span className="text-success">Verified</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaTimesCircle className="text-error" />
+                        <span className="text-error">Not Verified</span>
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
-              <p className="font-semibold mb-3">💰 {property.priceRange}</p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                Details
-              </button>
+
+              <p className="flex items-center gap-1 font-semibold mb-3">
+                <FaMoneyBillWave className="text-primary" />
+                {property.priceRange}
+              </p>
+
+              <button className="btn btn-primary w-full">Details</button>
             </div>
           </div>
         ))}
