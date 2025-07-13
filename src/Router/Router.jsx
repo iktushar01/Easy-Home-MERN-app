@@ -12,6 +12,9 @@ import PrivateRoute from "../Routes/PrivateRoute";
 import MyProfile from "../Pages/UserPages/MyProfile/MyProfile";
 import AgentProfile from "../Pages/AgentPages/AgentProfile/AgentProfile";
 import AddProperty from "../Pages/AgentPages/AddProperty/AddProperty";
+import MyProperty from "../Pages/AgentPages/MyProperty/MyProperty";
+import SoldProperties from "../Pages/AgentPages/SoldProperties/SoldProperties";
+import RequestedProperties from "../Pages/AgentPages/RequestedProperties/RequestedProperties";
 
 export const router = createBrowserRouter([
   {
@@ -59,19 +62,19 @@ export const router = createBrowserRouter([
           },
           {
             path: "add-property",
-            element:<AddProperty/>
+            element:<AddProperty/>,
           },
           {
             path: "my-properties",
-            element:<AddProperty/>
+            element:<MyProperty/>,
           },
           {
             path: "sold-properties",
-            element:<AddProperty/>
+            element:<SoldProperties/>,
           },
           {
             path: "requested-properties",
-            element:<AddProperty/>
+            element:<RequestedProperties/>
           },
         ]
 
