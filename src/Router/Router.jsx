@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layouts/MainLayout";
 import HomePage from "../Pages/HomePage/HomePage";
 import AuthLayout from "../Layouts/AuthLayout";
@@ -16,6 +16,7 @@ import MyProperty from "../Pages/AgentPages/MyProperty/MyProperty";
 import SoldProperties from "../Pages/AgentPages/SoldProperties/SoldProperties";
 import RequestedProperties from "../Pages/AgentPages/RequestedProperties/RequestedProperties";
 import AllProperties from "../Pages/AllProperties/AllProperties";
+import AllPropertiesDetails from "../Pages/AllProperties/AllPropertiesDetails";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +30,11 @@ export const router = createBrowserRouter([
       {
         path:"properties",
         element:<AllProperties/>,
-      }
+      },
+      {
+        path:"properties/:id",
+        element:<AllPropertiesDetails/>,
+      },
     ],
   },
   {

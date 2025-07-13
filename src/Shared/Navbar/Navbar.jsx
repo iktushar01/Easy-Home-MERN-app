@@ -22,9 +22,8 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Style for active NavLink
   const activeStyle = {
-    color: "#60a5fa", // blue-400
+    color: "#60a5fa",
   };
 
   return (
@@ -65,11 +64,18 @@ const Navbar = () => {
               <FaChartBar className="mr-2" /> Dashboard
             </NavLink>
 
-            <NavLink to='/dashboard'>
-            </NavLink>
-
+            {/* Auth Buttons + Profile Picture */}
             {user ? (
-              <LogOutBtn />
+              <div className="flex items-center space-x-4">
+                {user.photoURL && (
+                  <img
+                    src={user.photoURL}
+                    alt="User Profile"
+                    className="w-10 h-10 rounded-full border border-gray-300 object-cover"
+                  />
+                )}
+                <LogOutBtn />
+              </div>
             ) : (
               <NavLink
                 to="/login"
@@ -134,7 +140,14 @@ const Navbar = () => {
               </NavLink>
 
               {user ? (
-                <div className="px-3 py-2">
+                <div className="flex items-center px-3 py-2 space-x-4">
+                  {user.photoURL && (
+                    <img
+                      src={user.photoURL}
+                      alt="User Profile"
+                      className="w-10 h-10 rounded-full border border-gray-300 object-cover"
+                    />
+                  )}
                   <LogOutBtn />
                 </div>
               ) : (
