@@ -17,6 +17,10 @@ const AddProperty = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (parseFloat(data.minPrice) >= parseFloat(data.maxPrice)) {
+      return alert("Minimum price should be less than maximum price.");
+    }
+
     const imageFile = data.image[0];
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -32,7 +36,8 @@ const AddProperty = () => {
         title: data.title,
         description: data.description,
         location: data.location,
-        priceRange: data.priceRange,
+        minPrice: parseFloat(data.minPrice),
+        maxPrice: parseFloat(data.maxPrice),
         image: imageUrl,
         agentName: user?.displayName || "",
         agentEmail: user?.email || "",
@@ -149,20 +154,38 @@ const AddProperty = () => {
           />
         </div>
 
-        {/* Price Range */}
+        {/* Min Price */}
         <div>
           <label className="label">
-            <span className="label-text">Price Range</span>
+            <span className="label-text">Minimum Price</span>
           </label>
           <input
-            {...register("priceRange", { required: true })}
-            type="text"
-            placeholder="e.g. $1000 - $2000"
+            {...register("minPrice", { required: true })}
+            type="number"
+            placeholder="Enter minimum price"
             className="input input-bordered w-full"
           />
-          {errors.priceRange && (
+          {errors.minPrice && (
             <p className="text-sm text-error mt-1">
-              Price range is required.
+              Minimum price is required.
+            </p>
+          )}
+        </div>
+
+        {/* Max Price */}
+        <div>
+          <label className="label">
+            <span className="label-text">Maximum Price</span>
+          </label>
+          <input
+            {...register("maxPrice", { required: true })}
+            type="number"
+            placeholder="Enter maximum price"
+            className="input input-bordered w-full"
+          />
+          {errors.maxPrice && (
+            <p className="text-sm text-error mt-1">
+              Maximum price is required.
             </p>
           )}
         </div>
