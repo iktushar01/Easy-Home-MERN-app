@@ -57,7 +57,7 @@ const AdvertisementSection = () => {
                 <div>
                   <p className="text-sm">{property.agentName}</p>
                   <p className="text-xs flex items-center gap-1">
-                    {property.verificationStatus === "verified" ? (
+                    {property.status === "verified" ? (
                       <>
                         <FaCheckCircle className="text-success" />
                         <span className="text-success">Verified</span>

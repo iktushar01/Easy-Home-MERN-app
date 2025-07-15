@@ -27,15 +27,15 @@ const DashBoardLayout = () => {
             userRole === "admin" &&
             !currentPath.includes("/dashboard/admin")
           ) {
-            navigate("/dashboard/admin");
+            navigate("/dashboard/admin/profile");
           } else if (
             userRole === "user" &&
             !currentPath.includes("/dashboard/user")
           ) {
-            navigate("/dashboard/user");
+            navigate("/dashboard/user/profile");
           } else if (
             userRole === "agent" &&
-            !currentPath.includes("/dashboard/agent")
+            !currentPath.includes("/dashboard/agent/profile")
           ) {
             navigate("/dashboard/agent");
           }
