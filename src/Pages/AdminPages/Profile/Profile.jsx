@@ -21,7 +21,6 @@ const Profile = () => {
     phoneNumber,
     address,
     website,
-    agentId,
     companyName,
     role, // assuming role is coming from user object
   } = user;

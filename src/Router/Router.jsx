@@ -21,6 +21,7 @@ import WishList from "../Pages/UserPages/WishList/WishList";
 import MyReview from "../Pages/UserPages/MyReview/MyReview";
 import Profile from "../Pages/AdminPages/Profile/Profile";
 import ManageReviews from "../Pages/AdminPages/Profile/ManageReviews";
+import ManageProperty from "../Pages/AdminPages/ManageProperty/ManageProperty";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
           {
             path: "manage-reviews",
             element: <ManageReviews/>
+          },
+          {
+            path: "manage-properties",
+            element: <ManageProperty/>
           }
         ]
         
