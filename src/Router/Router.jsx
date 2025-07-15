@@ -18,6 +18,7 @@ import RequestedProperties from "../Pages/AgentPages/RequestedProperties/Request
 import AllProperties from "../Pages/AllProperties/AllProperties";
 import AllPropertiesDetails from "../Pages/AllProperties/AllPropertiesDetails";
 import WishList from "../Pages/UserPages/WishList/WishList";
+import MyReview from "../Pages/UserPages/MyReview/MyReview";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ export const router = createBrowserRouter([
           {
             path: "wishlist",
             element: <WishList />,
+          },
+          {
+            path: "reviews",
+            element: <MyReview />,
           },
         ]
       },
