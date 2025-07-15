@@ -38,7 +38,7 @@ const AllProperties = () => {
             location,
             agentImage,
             agentName,
-            verificationStatus,
+            status,
             priceRange,
           } = property;
 
@@ -70,7 +70,7 @@ const AllProperties = () => {
                   <div>
                     <p className="font-medium">{agentName}</p>
                     <p className="text-sm flex items-center gap-1">
-                      {verificationStatus === "verified" ? (
+                      {status === "verified" ? (
                         <>
                           <FaCheckCircle className="text-success" />
                           <span className="text-success">Verified</span>
