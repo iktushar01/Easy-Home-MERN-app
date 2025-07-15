@@ -5,7 +5,7 @@ const AdminDashboard = () => {
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}
-            <div className="w-1/3 bg-gray-100 p-4 border-r">
+            <div className="w-1/3 p-4 border-r">
                 <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
                 <nav className="flex flex-col space-y-4">
                     <NavLink to="profile" className={({ isActive }) => isActive ? "text-blue-600 font-semibold" : "text-gray-700"}>

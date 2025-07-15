@@ -19,6 +19,7 @@ import AllProperties from "../Pages/AllProperties/AllProperties";
 import AllPropertiesDetails from "../Pages/AllProperties/AllPropertiesDetails";
 import WishList from "../Pages/UserPages/WishList/WishList";
 import MyReview from "../Pages/UserPages/MyReview/MyReview";
+import Profile from "../Pages/AdminPages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -63,6 +64,12 @@ export const router = createBrowserRouter([
     children: [
       { path: "admin",
         element: <AdminDashBoard />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile/>
+          }
+        ]
         
       },
       { path: "agent",
