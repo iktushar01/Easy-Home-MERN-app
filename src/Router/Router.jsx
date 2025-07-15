@@ -20,6 +20,7 @@ import AllPropertiesDetails from "../Pages/AllProperties/AllPropertiesDetails";
 import WishList from "../Pages/UserPages/WishList/WishList";
 import MyReview from "../Pages/UserPages/MyReview/MyReview";
 import Profile from "../Pages/AdminPages/Profile/Profile";
+import ManageReviews from "../Pages/AdminPages/Profile/ManageReviews";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <Profile/>
+          },
+          {
+            path: "manage-reviews",
+            element: <ManageReviews/>
           }
         ]
         
