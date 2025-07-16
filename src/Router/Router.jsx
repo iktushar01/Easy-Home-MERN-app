@@ -23,6 +23,7 @@ import Profile from "../Pages/AdminPages/Profile/Profile";
 import ManageReviews from "../Pages/AdminPages/Profile/ManageReviews";
 import ManageProperty from "../Pages/AdminPages/ManageProperty/ManageProperty";
 import ManageUser from "../Pages/AdminPages/ManageUser/ManageUser";
+import About from "../Pages/About/About";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path:"about",
+        element:<About/>
       },
       {
         path:"properties",
