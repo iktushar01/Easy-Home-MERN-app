@@ -106,7 +106,8 @@ const AllPropertiesDetails = () => {
     title,
     description,
     location,
-    priceRange,
+    minPrice,
+    maxPrice,
     agentName,
     agentEmail,
   } = property;
@@ -139,7 +140,7 @@ const AllPropertiesDetails = () => {
         <p className="flex items-center gap-3 text-secondary font-semibold">
           <FaMoneyBillWave className="text-primary" />
           Price:{" "}
-          <span className="font-bold text-primary text-lg ml-1">৳{priceRange}</span>
+          <span className="font-bold text-primary text-lg ml-1">৳{minPrice} - ৳{maxPrice}</span>
         </p>
       </div>
 

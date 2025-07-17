@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const WishList = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -51,9 +53,8 @@ const WishList = () => {
   };
 
   const handleMakeOffer = (propertyId) => {
-    toast("Offer feature coming soon!");
-    // Or navigate(`/make-offer/${propertyId}`)
-  };
+ navigate(`/dashboard/user/make-offer/${propertyId}`);
+};
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6">

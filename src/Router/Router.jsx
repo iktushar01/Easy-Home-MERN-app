@@ -24,6 +24,7 @@ import ManageReviews from "../Pages/AdminPages/Profile/ManageReviews";
 import ManageProperty from "../Pages/AdminPages/ManageProperty/ManageProperty";
 import ManageUser from "../Pages/AdminPages/ManageUser/ManageUser";
 import About from "../Pages/About/About";
+import MakeOffer from "../Pages/UserPages/WishList/MakeOffer";
 
 export const router = createBrowserRouter([
   {
@@ -144,6 +145,10 @@ export const router = createBrowserRouter([
           {
             path: "reviews",
             element: <MyReview />,
+          },
+          {
+            path: "make-offer/:id",
+            element: <MakeOffer />,
           },
         ]
       },
