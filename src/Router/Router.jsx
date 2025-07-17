@@ -26,6 +26,7 @@ import ManageUser from "../Pages/AdminPages/ManageUser/ManageUser";
 import About from "../Pages/About/About";
 import MakeOffer from "../Pages/UserPages/WishList/MakeOffer";
 import PropertyBought from "../Pages/UserPages/PropertyBought/PropertyBought";
+import Pay from "../Pages/UserPages/PropertyBought/Pay";
 
 export const router = createBrowserRouter([
   {
@@ -150,6 +151,10 @@ export const router = createBrowserRouter([
           {
             path: "make-offer/:id",
             element: <MakeOffer />,
+          },
+          {
+            path: "payment/:id",
+            element: <Pay />,
           },
           {
             path: "bought",
