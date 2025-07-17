@@ -50,42 +50,51 @@ const MakeOffer = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!offerAmount) {
       toast.error("Please enter an offer amount");
       return;
     }
+
     if (error) {
       toast.error(error);
       return;
     }
 
-    // API call or logic for submitting offer goes here
-    console.log({
+    const offerData = {
       propertyId: id,
-      propertyTitle: property.name,
+      propertyTitle: property.title,
       propertyLocation: property.location,
       agentName: property.agentName,
-      offerAmount,
+      offerAmount: Number(offerAmount),
       buyerEmail: user.email,
       buyerName: user.displayName,
       buyingDate: new Date().toISOString().split("T")[0],
-    });
+    };
 
-    toast.success("Offer submitted successfully!");
-
-    setOfferAmount("");
+    try {
+      const res = await axiosSecure.post("/offers", offerData);
+      if (res.data?.insertedId) {
+        toast.success("Offer submitted successfully!");
+        setOfferAmount("");
+      } else {
+        toast.error("Failed to submit offer");
+      }
+    } catch (err) {
+      console.error("Offer submission failed:", err);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6  rounded shadow-md">
+    <div className="max-w-md mx-auto p-6 rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4">Make an Offer</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-semibold mb-1">Property Title</label>
-          <input type="text" value={property.name} readOnly className="input input-bordered w-full" />
+          <input type="text" value={property.title} readOnly className="input input-bordered w-full" />
         </div>
 
         <div>
