@@ -65,6 +65,7 @@ const MakeOffer = () => {
 
     const offerData = {
       propertyId: id,
+      propertyImg : property.image,
       propertyTitle: property.title,
       propertyLocation: property.location,
       agentName: property.agentName,
