@@ -1,93 +1,68 @@
-import React from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import Logo from '../Logo/Logo';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import Logo from "../Logo/Logo";
 
 const Footer = () => {
   return (
-    <footer className=" pt-12 pb-8">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
-          {/* About Section */}
-          <div className="mb-6">
-            <Logo/>
-            <p className=" mb-4">
-              Your trusted partner in finding the perfect property. We connect buyers with the best real estate opportunities.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className=" transition">
-                <FaFacebook size={20} />
-              </a>
-              <a href="#" className=" transition">
-                <FaTwitter size={20} />
-              </a>
-              <a href="#" className=" transition">
-                <FaInstagram size={20} />
-              </a>
-              <a href="#" className=" transition">
-                <FaLinkedin size={20} />
-              </a>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="mb-6">
-            <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className=" transition">Home</a></li>
-              <li><a href="#" className=" transition">Properties</a></li>
-              <li><a href="#" className=" transition">Agents</a></li>
-              <li><a href="#" className=" transition">About Us</a></li>
-              <li><a href="#" className=" transition">Contact</a></li>
-            </ul>
-          </div>
-
-          {/* Property Types */}
-          <div className="mb-6">
-            <h4 className="text-xl font-semibold mb-4">Property Types</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className=" transition">Apartments</a></li>
-              <li><a href="#" className=" transition">Villas</a></li>
-              <li><a href="#" className=" transition">Commercial</a></li>
-              <li><a href="#" className=" transition">Land</a></li>
-              <li><a href="#" className=" transition">Luxury Homes</a></li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className="mb-6">
-            <h4 className="text-xl font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center">
-                <FaMapMarkerAlt className="mr-3" />
-                <span className="">123 Real Estate Ave, Property City</span>
-              </li>
-              <li className="flex items-center">
-                <FaPhone className="mr-3 " />
-                <span className="">+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center">
-                <FaEnvelope className="mr-3 " />
-                <span className="">info@dreamhomerealty.com</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="border-t my-8"></div>
-
-        {/* Copyright */}
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className=" mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} DreamHome Realty. All rights reserved.
+    <footer className="bg-base-200 text-base-content px-6 py-8 mt-12">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Logo & Description */}
+        <div>
+          <Logo />
+          <p className="text-sm mt-2">
+            Your trusted platform for buying, selling, and managing real estate properties online.
           </p>
-          <div className="flex space-x-4">
-            <a href="#" className="transition text-sm">Privacy Policy</a>
-            <a href="#" className=" transition text-sm">Terms of Service</a>
-            <a href="#" className=" transition text-sm">Sitemap</a>
+        </div>
+
+        {/* Navigation Links */}
+        <div>
+          <h3 className="font-semibold mb-2">Quick Links</h3>
+          <ul className="space-y-2">
+            <li><Link to="/" className="link link-hover">Home</Link></li>
+            <li><Link to="/properties" className="link link-hover">Browse Properties</Link></li>
+            <li><Link to="/about" className="link link-hover">About</Link></li>
+            <li><Link to="/dashboard" className="link link-hover">Dashboard</Link></li>
+          </ul>
+        </div>
+
+        {/* Contact / Social */}
+        <div>
+          <h3 className="font-semibold mb-2">Contact</h3>
+          <p className="text-sm">Email: support@easyhome.com</p>
+          <p className="text-sm">Phone: +880-123-456789</p>
+          <div className="flex gap-4 mt-3 text-xl">
+            <a
+              href="https://youtube.com/iktushar01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              <FaYoutube />
+            </a>
+            <a
+              href="https://twitter.com/iktushar01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href="https://instagram.com/iktushar01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              <FaInstagram />
+            </a>
           </div>
         </div>
+      </div>
+
+      <div className="text-center text-sm mt-8 border-t pt-4 border-base-300 text-base-content/60">
+        &copy; {new Date().getFullYear()} EstateHub. All rights reserved.
       </div>
     </footer>
   );
