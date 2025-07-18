@@ -85,9 +85,9 @@ const AllProperties = () => {
                   </div>
                 </div>
 
-                <p className="flex items-center gap-1 font-semibold mb-3">
-                  <FaMoneyBillWave className="text-primary" />
-                  {priceRange}
+                <p className="flex items-center gap-2 font-bold">
+                  <FaMoneyBillWave className="text-primary" />$
+                  {property.minPrice} - ${property.maxPrice}
                 </p>
 
                 <Link to={`/properties/${_id}`}>
