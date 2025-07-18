@@ -15,7 +15,7 @@ const PropertyBought = () => {
   useEffect(() => {
     const fetchUserOffers = async () => {
       try {
-        const res = await axiosSecure.get(`/offers/${user.email}`);
+        const res = await axiosSecure.get(`/offers/by-email/${user.email}`);
         setOffers(res.data);
       } catch (error) {
         console.error("❌ Failed to fetch offers:", error);
@@ -91,4 +91,4 @@ const PropertyBought = () => {
   );
 };
 
-export default PropertyBought;
+export default PropertyBought; 
