@@ -50,7 +50,6 @@ const AllPropertiesDetails = () => {
       setIsReviewModalOpen(false);
       setReviewText("");
       setRating(5);
-      // Refresh reviews after submission
       fetchReviews();
     } catch (error) {
       toast.error("Failed to submit review");
@@ -86,18 +85,30 @@ const AllPropertiesDetails = () => {
 
   if (loading)
     return (
-      <div className="text-center py-20 text-base-content/70 dark:text-base-content/50">
-        Loading...
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
       </div>
     );
   if (error)
     return (
-      <div className="text-center py-20 text-error font-semibold">{error}</div>
+      <div className="alert alert-error max-w-md mx-auto mt-20 shadow-lg">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{error}</span>
+        </div>
+      </div>
     );
   if (!property)
     return (
-      <div className="text-center py-20 text-warning font-semibold">
-        Property not found.
+      <div className="alert alert-warning max-w-md mx-auto mt-20 shadow-lg">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span>Property not found.</span>
+        </div>
       </div>
     );
 
@@ -113,82 +124,84 @@ const AllPropertiesDetails = () => {
   } = property;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-base-100 rounded-lg shadow-lg dark:shadow-gray-700 transition-colors duration-300">
-      {/* Image */}
-      <div className="rounded-lg overflow-hidden shadow-md mb-6">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-72 md:h-96 object-cover"
-          loading="lazy"
-        />
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* Property Header */}
+      <div className="bg-base-100 rounded-2xl shadow-xl overflow-hidden mb-8">
+        <div className="relative h-80 md:h-96 w-full">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            loading="lazy"
+          />
+          <div className="absolute bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+            Featured Property
+          </div>
+        </div>
 
-      {/* Title */}
-      <h2 className="text-3xl font-extrabold text-primary mb-4">{title}</h2>
+        <div className="p-6 md:p-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">{title}</h2>
+          <div className="flex items-center gap-2 text-lg mb-4">
+            <FaMapMarkerAlt className="text-secondary" />
+            <span className="text-base-content/80">{location}</span>
+          </div>
 
-      {/* Description */}
-      <p className="text-base-content/80 mb-6 leading-relaxed">{description}</p>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <span className="text-3xl font-bold text-primary">৳{minPrice}</span>
+              {maxPrice && <span className="text-lg text-base-content/70"> - ৳{maxPrice}</span>}
+            </div>
+            <button
+              onClick={handleAddToWishlist}
+              className="btn btn-error btn-outline hover:btn-error gap-2"
+            >
+              <FaHeart />
+              Add to Wishlist
+            </button>
+          </div>
 
-      {/* Details */}
-      <div className="space-y-4 mb-6">
-        <p className="flex items-center gap-3 text-secondary font-semibold">
-          <FaMapMarkerAlt className="text-primary" />
-          Location: <span className="font-normal text-base-content ml-1">{location}</span>
-        </p>
-
-        <p className="flex items-center gap-3 text-secondary font-semibold">
-          <FaMoneyBillWave className="text-primary" />
-          Price:{" "}
-          <span className="font-bold text-primary text-lg ml-1">৳{minPrice} - ৳{maxPrice}</span>
-        </p>
-      </div>
-
-      {/* Wishlist and Review Buttons */}
-      <div className="flex flex-wrap gap-4 mb-6">
-        <button
-          onClick={handleAddToWishlist}
-          className="btn btn-outline btn-primary flex items-center gap-2"
-        >
-          <FaHeart className="text-error" />
-          Add to Wishlist
-        </button>
-
-        <button 
-          onClick={() => setIsReviewModalOpen(true)}
-          className="btn btn-outline btn-accent flex items-center gap-2"
-        >
-          <FaStar className="text-yellow-500" />
-          Write a Review
-        </button>
+          <p className="text-base-content/80 mb-6 leading-relaxed text-lg">{description}</p>
+        </div>
       </div>
 
       {/* Reviews Section */}
-      <div className="border-t border-base-content/20 pt-4 mb-6">
-        <h3 className="text-xl font-semibold text-secondary mb-3">Reviews</h3>
+      <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8 mb-8">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-secondary">Customer Reviews</h3>
+          <button 
+            onClick={() => setIsReviewModalOpen(true)}
+            className="btn btn-primary gap-2"
+          >
+            <FaStar />
+            Write a Review
+          </button>
+        </div>
+
         {reviews.length === 0 ? (
-          <p className="text-base-content/70">No reviews yet.</p>
+          <div className="text-center py-8">
+            <p className="text-base-content/70 text-lg mb-4">No reviews yet. Be the first to review!</p>
+          </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {reviews.map((review) => (
-              <div key={review._id} className="bg-base-200 p-4 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex items-center">
+              <div key={review._id} className="border-b border-base-200 pb-6 last:border-0">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-bold text-lg">{review.email}</h4>
+                    <div className="text-sm text-base-content/70">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
-                        className={`${i < review.rating ? 'text-yellow-500' : 'text-gray-300'}`}
+                        className={`text-lg ${i < review.rating ? 'text-yellow-400' : 'text-base-content/30'}`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-base-content/70">
-                    {new Date(review.createdAt).toLocaleDateString()}
-                  </span>
                 </div>
                 <p className="text-base-content">{review.review}</p>
-                <p className="text-sm text-base-content/70 mt-2">
-                  - {review.email}
-                </p>
               </div>
             ))}
           </div>
@@ -196,75 +209,83 @@ const AllPropertiesDetails = () => {
       </div>
 
       {/* Agent Info */}
-      <div className="border-t border-base-content/20 pt-4">
-        <h3 className="text-xl font-semibold text-secondary mb-3">Agent Info</h3>
-
-        <p className="flex items-center gap-3 mb-2">
-          <FaUser className="text-primary" />
-          <span className="font-medium">Name:</span> {agentName}
-        </p>
-
-        <p className="flex items-center gap-3">
-          <FaEnvelope className="text-primary" />
-          <span className="font-medium">Email:</span>{" "}
-          <p className="text-primary hover:text-secondary transition-colors">
-            {agentEmail}
-          </p>
-        </p>
+      <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 className="text-2xl font-bold text-secondary mb-4">Agent Information</h3>
+        <div className="flex items-center gap-6">
+          <div className="avatar">
+            <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img src={property.agentImage || "https://i.ibb.co/5GzXkwq/user.png"} alt={agentName} />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="flex items-center gap-3 text-lg">
+              <FaUser className="text-primary" />
+              <span className="font-medium">Name:</span> {agentName}
+            </p>
+            <p className="flex items-center gap-3 text-lg">
+              <FaEnvelope className="text-primary" />
+              <span className="font-medium">Email:</span>
+              <a href={`mailto:${agentEmail}`} className="text-primary hover:text-secondary transition-colors">
+                {agentEmail}
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Review Modal */}
       {isReviewModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-base-100 rounded-lg shadow-xl p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold">Write a Review</h3>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">Write Your Review</h3>
               <button 
                 onClick={() => setIsReviewModalOpen(false)}
-                className="btn btn-ghost btn-sm"
+                className="btn btn-ghost btn-circle"
               >
-                <FaTimes />
+                <FaTimes className="text-lg" />
               </button>
             </div>
             
-            <div className="mb-4">
-              <label className="block mb-2 font-medium">Rating</label>
-              <select
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                className="select select-bordered w-full"
-              >
-                <option value="5">5 Stars</option>
-                <option value="4">4 Stars</option>
-                <option value="3">3 Stars</option>
-                <option value="2">2 Stars</option>
-                <option value="1">1 Star</option>
-              </select>
+            <div className="mb-6">
+              <label className="block mb-3 font-medium text-lg">Rating</label>
+              <div className="rating rating-lg">
+                {[5, 4, 3, 2, 1].map((value) => (
+                  <input
+                    key={value}
+                    type="radio"
+                    name="rating"
+                    className="mask mask-star-2 bg-yellow-400"
+                    checked={rating === value}
+                    onChange={() => setRating(value)}
+                  />
+                ))}
+              </div>
             </div>
             
-            <div className="mb-4">
-              <label className="block mb-2 font-medium">Your Review</label>
+            <div className="mb-6">
+              <label className="block mb-3 font-medium text-lg">Your Review</label>
               <textarea
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
-                className="textarea textarea-bordered w-full h-32"
-                placeholder="Share your experience..."
+                className="textarea textarea-bordered w-full h-40 text-lg"
+                placeholder="Share your experience with this property..."
               ></textarea>
             </div>
             
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-4">
               <button 
                 onClick={() => setIsReviewModalOpen(false)}
-                className="btn btn-ghost"
+                className="btn btn-ghost px-6"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSubmitReview}
-                className="btn btn-primary"
+                className="btn btn-primary px-6"
                 disabled={!reviewText.trim()}
               >
-                Submit Review
+                Submit
               </button>
             </div>
           </div>
