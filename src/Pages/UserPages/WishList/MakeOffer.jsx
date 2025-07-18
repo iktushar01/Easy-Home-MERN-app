@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { FaHome, FaMapMarkerAlt, FaUserTie, FaDollarSign, FaEnvelope, FaUser, FaCalendarAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const MakeOffer = () => {
   const { id } = useParams(); // propertyId
@@ -31,36 +32,6 @@ const MakeOffer = () => {
     fetchProperty();
   }, [id, axiosSecure]);
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-64">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
-  );
-  
-  if (!property) return (
-    <div className="alert alert-error max-w-md mx-auto mt-8">
-      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>Property not found</span>
-    </div>
-  );
-
-  const minPrice = property.minPrice || 0;
-  const maxPrice = property.maxPrice || 0;
-
-  const handleOfferChange = (e) => {
-    const val = e.target.value;
-    setOfferAmount(val);
-
-    const numVal = Number(val);
-    if (numVal < minPrice || numVal > maxPrice) {
-      setError(`Offer must be between $${minPrice.toLocaleString()} and $${maxPrice.toLocaleString()}`);
-    } else {
-      setError("");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,19 +57,97 @@ const MakeOffer = () => {
       buyingDate: new Date().toISOString().split("T")[0],
     };
 
-    try {
-      const res = await axiosSecure.post("/offers", offerData);
-      if (res.data?.insertedId) {
-        toast.success("Offer submitted successfully!");
-        setOfferAmount("");
-      } else {
-        toast.error("Failed to submit offer");
+    // Show SweetAlert confirmation dialog
+    const result = await Swal.fire({
+      title: "Confirm Your Offer",
+      html: `
+        <div class="text-left">
+          <p>You are about to submit an offer of <strong>$${offerAmount}</strong> for:</p>
+          <p class="font-bold mt-2">${property.title}</p>
+          <p class="text-sm">${property.location}</p>
+        </div>
+      `,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3b82f6",
+      cancelButtonColor: "#ef4444",
+      confirmButtonText: "Submit Offer",
+      cancelButtonText: "Cancel",
+      background: "#1f2937",
+      color: "#ffffff",
+      backdrop: `
+        rgba(0,0,0,0.7)
+        url("/images/house-key.gif")
+        center top
+        no-repeat
+      `,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
       }
-    } catch (err) {
-      console.error("Offer submission failed:", err);
-      toast.error("Something went wrong. Please try again.");
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await axiosSecure.post("/offers", offerData);
+        if (res.data?.insertedId) {
+          await Swal.fire({
+            title: "Offer Submitted!",
+            text: "Your offer has been successfully submitted.",
+            icon: "success",
+            confirmButtonColor: "#10b981",
+            background: "#1f2937",
+            color: "#ffffff"
+          });
+          setOfferAmount("");
+        } else {
+          throw new Error("Failed to submit offer");
+        }
+      } catch (err) {
+        console.error("Offer submission failed:", err);
+        await Swal.fire({
+          title: "Submission Failed",
+          text: err.message || "Something went wrong. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#ef4444",
+          background: "#1f2937",
+          color: "#ffffff"
+        });
+      }
     }
   };
+
+  const handleOfferChange = (e) => {
+    const val = e.target.value;
+    setOfferAmount(val);
+
+    const numVal = Number(val);
+    if (numVal < minPrice || numVal > maxPrice) {
+      setError(`Offer must be between $${minPrice.toLocaleString()} and $${maxPrice.toLocaleString()}`);
+    } else {
+      setError("");
+    }
+  };
+
+  if (loading) return (
+    <div className="flex justify-center items-center h-64">
+      <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  );
+  
+  if (!property) return (
+    <div className="alert alert-error max-w-md mx-auto mt-8">
+      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Property not found</span>
+    </div>
+  );
+
+  const minPrice = property.minPrice || 0;
+  const maxPrice = property.maxPrice || 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
