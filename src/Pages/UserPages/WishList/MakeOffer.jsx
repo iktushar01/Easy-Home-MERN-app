@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import { FaHome, FaMapMarkerAlt, FaUserTie, FaDollarSign, FaEnvelope, FaUser, FaCalendarAlt } from "react-icons/fa";
 
 const MakeOffer = () => {
   const { id } = useParams(); // propertyId
@@ -11,8 +12,6 @@ const MakeOffer = () => {
 
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // form state
   const [offerAmount, setOfferAmount] = useState("");
   const [error, setError] = useState("");
 
@@ -32,8 +31,20 @@ const MakeOffer = () => {
     fetchProperty();
   }, [id, axiosSecure]);
 
-  if (loading) return <div className="p-4 text-center">Loading property details...</div>;
-  if (!property) return <div className="p-4 text-center">Property not found</div>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-64">
+      <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  );
+  
+  if (!property) return (
+    <div className="alert alert-error max-w-md mx-auto mt-8">
+      <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Property not found</span>
+    </div>
+  );
 
   const minPrice = property.minPrice || 0;
   const maxPrice = property.maxPrice || 0;
@@ -44,7 +55,7 @@ const MakeOffer = () => {
 
     const numVal = Number(val);
     if (numVal < minPrice || numVal > maxPrice) {
-      setError(`Offer must be between $${minPrice} and $${maxPrice}`);
+      setError(`Offer must be between $${minPrice.toLocaleString()} and $${maxPrice.toLocaleString()}`);
     } else {
       setError("");
     }
@@ -65,7 +76,7 @@ const MakeOffer = () => {
 
     const offerData = {
       propertyId: id,
-      propertyImg : property.image,
+      propertyImg: property.image,
       propertyTitle: property.title,
       propertyLocation: property.location,
       agentName: property.agentName,
@@ -90,60 +101,146 @@ const MakeOffer = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Make an Offer</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-semibold mb-1">Property Title</label>
-          <input type="text" value={property.title} readOnly className="input input-bordered w-full" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="bg-base-100 rounded-xl shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
+          <h1 className="text-2xl md:text-3xl font-bold">Make an Offer</h1>
+          <p className="opacity-90 mt-1">Submit your offer for this property</p>
         </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Property Location</label>
-          <input type="text" value={property.location} readOnly className="input input-bordered w-full" />
-        </div>
+        <div className="p-6 md:p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Property Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium flex items-center gap-2">
+                    <FaHome className="text-primary" />
+                    Property Title
+                  </span>
+                </label>
+                <input 
+                  type="text" 
+                  value={property.title} 
+                  readOnly 
+                  className="input input-bordered w-full bg-base-200" 
+                />
+              </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Agent Name</label>
-          <input type="text" value={property.agentName} readOnly className="input input-bordered w-full" />
-        </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-primary" />
+                    Location
+                  </span>
+                </label>
+                <input 
+                  type="text" 
+                  value={property.location} 
+                  readOnly 
+                  className="input input-bordered w-full bg-base-200" 
+                />
+              </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Offer Amount</label>
-          <input
-            type="number"
-            value={offerAmount}
-            onChange={handleOfferChange}
-            placeholder={`Enter amount between $${minPrice} and $${maxPrice}`}
-            className="input input-bordered w-full"
-          />
-          {error && <p className="text-red-500 mt-1">{error}</p>}
-        </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium flex items-center gap-2">
+                    <FaUserTie className="text-primary" />
+                    Agent
+                  </span>
+                </label>
+                <input 
+                  type="text" 
+                  value={property.agentName} 
+                  readOnly 
+                  className="input input-bordered w-full bg-base-200" 
+                />
+              </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Buyer Email</label>
-          <input type="email" value={user.email} readOnly className="input input-bordered w-full" />
-        </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium flex items-center gap-2">
+                    <FaDollarSign className="text-primary" />
+                    Your Offer
+                  </span>
+                </label>
+                <input
+                  type="number"
+                  value={offerAmount}
+                  onChange={handleOfferChange}
+                  placeholder={`$${minPrice.toLocaleString()} - $${maxPrice.toLocaleString()}`}
+                  className="input input-bordered w-full"
+                />
+                {error && (
+                  <label className="label">
+                    <span className="label-text-alt text-error">{error}</span>
+                  </label>
+                )}
+              </div>
+            </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Buyer Name</label>
-          <input type="text" value={user.displayName || ""} readOnly className="input input-bordered w-full" />
-        </div>
+            {/* Buyer Information */}
+            <div className="border-t border-base-200 pt-6">
+              <h3 className="text-lg font-bold mb-4 text-primary">Buyer Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium flex items-center gap-2">
+                      <FaEnvelope className="text-primary" />
+                      Your Email
+                    </span>
+                  </label>
+                  <input 
+                    type="email" 
+                    value={user.email} 
+                    readOnly 
+                    className="input input-bordered w-full bg-base-200" 
+                  />
+                </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Buying Date</label>
-          <input
-            type="date"
-            defaultValue={new Date().toISOString().split("T")[0]}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium flex items-center gap-2">
+                      <FaUser className="text-primary" />
+                      Your Name
+                    </span>
+                  </label>
+                  <input 
+                    type="text" 
+                    value={user.displayName || ""} 
+                    readOnly 
+                    className="input input-bordered w-full bg-base-200" 
+                  />
+                </div>
 
-        <button type="submit" className="btn btn-primary w-full" disabled={!!error}>
-          Submit Offer
-        </button>
-      </form>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium flex items-center gap-2">
+                      <FaCalendarAlt className="text-primary" />
+                      Purchase Date
+                    </span>
+                  </label>
+                  <input
+                    type="date"
+                    defaultValue={new Date().toISOString().split("T")[0]}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <button 
+                type="submit" 
+                className={`btn btn-primary btn-block ${error ? 'btn-disabled' : ''}`}
+              >
+                Submit Offer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
