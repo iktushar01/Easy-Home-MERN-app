@@ -6,7 +6,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { toast } from "react-hot-toast";
 
 // Load your Stripe publishable key
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
@@ -22,68 +22,140 @@ const CheckoutForm = ({ offer }) => {
 
   
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setProcessing(true);
 
-    if (!stripe || !elements) return;
+  // 1. Validate Stripe and Elements
+  if (!stripe || !elements) {
+    setError("Payment system not ready. Please try again later.");
+    setProcessing(false);
+    return;
+  }
 
-    const card = elements.getElement(CardElement);
-    if (!card) return;
+  // 2. Validate card element
+  const card = elements.getElement(CardElement);
+  if (!card) {
+    setError("Please enter your card details");
+    setProcessing(false);
+    return;
+  }
 
-    setProcessing(true);
+  // 3. Validate offer amount
+  const amount = parseFloat(offer?.offerAmount);
+  if (isNaN(amount)) {
+    setError("Invalid offer amount");
+    setProcessing(false);
+    return;
+  }
 
-    try {
-      // 1. Create PaymentIntent
-      const { data } = await axiosSecure.post("/create-payment-intent", {
-        offerAmount: offer.offerAmount,
-      });
+  // 4. Validate Stripe amount limits (in dollars)
+  if (amount < 0.5) {
+    setError("Minimum payment amount is $0.50");
+    setProcessing(false);
+    return;
+  }
 
-      console.log("Offer in checkout form:", offer);
+  if (amount > 999999.99) {
+    setError("Maximum payment amount is $999,999.99");
+    setProcessing(false);
+    return;
+  }
 
+  try {
+    console.log("Starting payment process for offer:", offer._id, "Amount:", amount);
 
-      const clientSecret = data.clientSecret;
+    // 5. Create Payment Intent
+    const { data } = await axiosSecure.post("/create-payment-intent", {
+      offerAmount: amount.toFixed(2),
+      offerId: offer._id
+    }).catch(err => {
+      console.error("Payment intent creation failed:", err.response?.data || err.message);
+      throw new Error(err.response?.data?.error || "Failed to initialize payment");
+    });
 
-      // 2. Create PaymentMethod
-      const paymentMethodResult = await stripe.createPaymentMethod({
-        type: "card",
-        card,
-        billing_details: {
-          name: offer.buyerName || "Anonymous",
-          email: offer.buyerEmail || "noemail@example.com",
-        },
-      });
+    if (!data?.clientSecret) {
+      throw new Error("Payment system error (no client secret)");
+    }
 
-      if (paymentMethodResult.error) {
-        setError(paymentMethodResult.error.message);
-        setProcessing(false);
-        return;
+    console.log("Payment intent created:", data.paymentIntentId);
+
+    // 6. Create Payment Method
+    const { paymentMethod, error: paymentMethodError } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+      billing_details: {
+        name: offer.buyerName || "Anonymous",
+        email: offer.buyerEmail || "noemail@example.com",
+      },
+    });
+
+    if (paymentMethodError) {
+      throw new Error(paymentMethodError.message || "Invalid card details");
+    }
+
+    if (!paymentMethod?.id) {
+      throw new Error("Failed to process card information");
+    }
+
+    console.log("Payment method created:", paymentMethod.id);
+
+    // 7. Confirm Card Payment
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
+      data.clientSecret,
+      {
+        payment_method: paymentMethod.id,
+        receipt_email: offer.buyerEmail || undefined,
       }
+    );
 
-      // 3. Confirm payment
-      const confirm = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethodResult.paymentMethod.id,
-      });
+    if (confirmError) {
+      throw new Error(confirmError.message || "Payment authorization failed");
+    }
 
-      if (confirm.error) {
-        setError(confirm.error.message);
-        setProcessing(false);
-      } else if (confirm.paymentIntent.status === "succeeded") {
-        // 4. Update status in backend
-        await axiosSecure.patch(`/offers/payment-success/${offer._id}`, {
-          transactionId: confirm.paymentIntent.id,
+    console.log("Payment confirmation result:", paymentIntent?.status, paymentIntent?.id);
+
+    // 8. Handle Payment Result
+    switch (paymentIntent?.status) {
+      case "succeeded":
+        // Update backend
+        const updateResponse = await axiosSecure.patch(
+          `/offers/payment-success/${offer._id}`,
+          {
+            transactionId: paymentIntent.id,
+            paymentAmount: amount,
+            paymentDate: new Date().toISOString(),
+          }
+        ).catch(err => {
+          console.error("Status update failed:", err);
+          throw new Error("Payment succeeded but record update failed");
         });
 
+        console.log("Backend updated successfully:", updateResponse.data);
         toast.success("Payment successful!");
         navigate("/dashboard/property-bought");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong!");
-    } finally {
-      setProcessing(false);
-    }
-  };
+        break;
 
+      case "requires_action":
+        throw new Error("Additional authentication required");
+
+      case "processing":
+        toast.success("Payment processing - we'll notify you when complete");
+        navigate("/dashboard/property-bought");
+        break;
+
+      default:
+        throw new Error(`Unexpected payment status: ${paymentIntent?.status}`);
+    }
+  } catch (err) {
+    console.error("Payment error:", err);
+    setError(err.message || "Payment failed. Please try again.");
+    toast.error(err.message || "Payment failed");
+  } finally {
+    setProcessing(false);
+  }
+};
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
       <CardElement className="border p-3 rounded" />
