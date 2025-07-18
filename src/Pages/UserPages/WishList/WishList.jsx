@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FaHeart, FaTrash, FaHandshake, FaMapMarkerAlt, FaDollarSign } from "react-icons/fa";
 
 const WishList = () => {
   const { user } = useAuth();
@@ -53,70 +54,98 @@ const WishList = () => {
   };
 
   const handleMakeOffer = (propertyId) => {
- navigate(`/dashboard/user/make-offer/${propertyId}`);
-};
+    navigate(`/dashboard/user/make-offer/${propertyId}`);
+  };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-6">
-      <h2 className="text-3xl font-bold mb-6 text-primary">My Wishlist</h2>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold text-primary">Saved Properties</h1>
+          <p className="text-base-content/70 mt-2">
+            {wishlist.length} {wishlist.length === 1 ? "property" : "properties"} saved
+          </p>
+        </div>
+      </div>
 
       {loading ? (
-        <div className="flex justify-center items-center h-40">
-          <span className="loading loading-spinner text-primary"></span>
+        <div className="flex justify-center items-center h-64">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
       ) : wishlist.length === 0 ? (
-        <div className="text-center text-gray-500">No properties in wishlist.</div>
+        <div className="text-center py-16 bg-base-200 rounded-xl">
+          <div className="flex justify-center mb-4">
+            <FaHeart className="text-5xl text-primary/30" />
+          </div>
+          <h3 className="text-xl font-medium text-base-content/70">Your wishlist is empty</h3>
+          <p className="text-base-content/50 mt-2">
+            Save properties you're interested in by clicking the heart icon
+          </p>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {wishlist.map((property) => (
             <div
               key={property._id}
-              className="card bg-base-100 shadow-md border border-base-200"
+              className="bg-base-100 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-base-200/50 group"
             >
-              <figure className="h-48 overflow-hidden">
+              <div className="relative">
                 <img
                   src={property.image}
-                  alt={property.name}
-                  className="object-cover w-full h-full"
+                  alt={property.title}
+                  className="w-full h-60 object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-500"
                 />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title text-lg md:text-xl">{property.name}</h2>
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Location:</span> {property.location}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Price:</span> ${property.priceRange}
-                </p>
+                <button
+                  onClick={() => handleRemove(property.wishlistId)}
+                  className="absolute top-4 right-4 btn btn-circle btn-sm btn-error text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  aria-label="Remove from wishlist"
+                >
+                  <FaTrash className="text-sm" />
+                </button>
+              </div>
 
-                <div className="flex items-center gap-3 mt-3">
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2 line-clamp-1">{property.title}</h3>
+                
+                <div className="flex items-center gap-2 text-sm text-base-content/70 mb-3">
+                  <FaMapMarkerAlt className="text-primary" />
+                  <span className="line-clamp-1">{property.location}</span>
+                </div>
+                
+                <div className="flex items-center gap-2 text-lg font-bold mb-4">
+                  <FaDollarSign className="text-primary" />
+                  <span>${property.minPrice.toLocaleString()} - ${property.maxPrice.toLocaleString()}</span>
+                </div>
+
+                <div className="flex items-center gap-3 pt-4 border-t border-base-200/50">
                   <div className="avatar">
-                    <div className="w-10 h-10 rounded-full">
+                    <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-1">
                       <img src={property.agentImage} alt={property.agentName} />
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">{property.agentName}</p>
+                    <p className="font-medium">{property.agentName}</p>
                     {property.isVerified && (
-                      <span className="badge badge-success badge-sm mt-0.5">
+                      <span className="badge badge-success badge-xs mt-0.5 gap-1">
                         Verified
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="card-actions justify-end mt-4">
+                <div className="flex gap-3 mt-5">
                   <button
                     onClick={() => handleMakeOffer(property._id)}
-                    className="btn btn-sm btn-primary"
+                    className="btn btn-primary flex-1 gap-2"
                   >
-                    Make an Offer
+                    <FaHandshake />
+                    Make Offer
                   </button>
                   <button
                     onClick={() => handleRemove(property.wishlistId)}
-                    className="btn btn-sm btn-error"
+                    className="btn btn-outline btn-error md:hidden"
                   >
-                    Remove
+                    <FaTrash />
                   </button>
                 </div>
               </div>
