@@ -4,6 +4,7 @@ import Logo from "../Shared/Logo/Logo";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import ThemeToggle from "../Shared/ThemeToggle/ThemeToggle";
+import { Toaster } from "react-hot-toast";
 
 const DashBoardLayout = () => {
   const { user, loading } = useAuth();
@@ -52,6 +53,8 @@ const DashBoardLayout = () => {
 
   return (
     <div>
+            <Toaster />
+
       <div className="flex items-center justify-center gap-3">
         <Logo />
         <ThemeToggle />
