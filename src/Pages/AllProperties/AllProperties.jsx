@@ -24,12 +24,13 @@ const AllProperties = () => {
   }, [axiosSecure]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-primary mb-6 text-center">
-        All Properties
-      </h2>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold text-primary mb-3">Explore Properties</h2>
+        <div className="w-20 h-1 bg-primary mx-auto"></div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {properties.map((property) => {
           const {
             _id,
@@ -39,36 +40,42 @@ const AllProperties = () => {
             agentImage,
             agentName,
             status,
-            priceRange,
+            minPrice,
+            maxPrice,
           } = property;
 
           return (
             <div
               key={_id}
-              className="bg-base-100 shadow-md rounded-box overflow-hidden"
+              className="bg-base-100 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
             >
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative">
+                <img
+                  src={image}
+                  alt={title}
+                  className="w-full h-60 object-cover hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 right-4 badge badge-primary badge-lg">
+                  ${minPrice} - ${maxPrice}
+                </div>
+              </div>
 
-              <div className="p-4 text-base-content">
-                <h3 className="text-xl font-semibold mb-1">{title}</h3>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2 line-clamp-1">{title}</h3>
 
-                <p className="flex items-center gap-1 text-sm mb-2">
+                <div className="flex items-center gap-2 mb-3">
                   <FaMapMarkerAlt className="text-primary" />
-                  {location}
-                </p>
+                  <span className="text-sm">{location}</span>
+                </div>
 
-                <div className="flex items-center gap-3 my-3">
-                  <img
-                    src={agentImage}
-                    alt={agentName}
-                    className="w-10 h-10 rounded-full object-cover border"
-                  />
+                <div className="flex items-center gap-4 my-4">
+                  <div className="avatar">
+                    <div className="w-12 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2">
+                      <img src={agentImage} alt={agentName} />
+                    </div>
+                  </div>
                   <div>
-                    <p className="font-medium">{agentName}</p>
+                    <p className="font-semibold">{agentName}</p>
                     <p className="text-sm flex items-center gap-1">
                       {status === "verified" ? (
                         <>
@@ -85,13 +92,10 @@ const AllProperties = () => {
                   </div>
                 </div>
 
-                <p className="flex items-center gap-2 font-bold">
-                  <FaMoneyBillWave className="text-primary" />$
-                  {property.minPrice} - ${property.maxPrice}
-                </p>
-
                 <Link to={`/properties/${_id}`}>
-                  <button className="btn btn-primary w-full">Details</button>
+                  <button className="btn btn-primary btn-block mt-4 hover:btn-secondary transition-colors">
+                    View Details
+                  </button>
                 </Link>
               </div>
             </div>
