@@ -28,9 +28,9 @@ const FAQ = () => {
   };
 
   return (
-    <section className="bg-white py-12 px-4 md:px-16">
+    <section className=" py-12 px-4 md:px-16">
       <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-      <div className="max-w-4xl mx-auto space-y-4">
+      <div className="max-w-5xl mx-auto space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}

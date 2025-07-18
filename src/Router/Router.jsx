@@ -27,10 +27,12 @@ import About from "../Pages/About/About";
 import MakeOffer from "../Pages/UserPages/WishList/MakeOffer";
 import PropertyBought from "../Pages/UserPages/PropertyBought/PropertyBought";
 import Pay from "../Pages/UserPages/PropertyBought/Pay";
+import ErrorPage from "../Shared/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage />,
     element: <MainLayout />,
     children: [
       {
@@ -38,21 +40,30 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path:"about",
-        element:<About/>
+        path: "about",
+        element: <About />,
       },
       {
-        path:"properties",
-        element:<PrivateRoute><AllProperties/></PrivateRoute>,
+        path: "properties",
+        element: (
+          <PrivateRoute>
+            <AllProperties />
+          </PrivateRoute>
+        ),
       },
       {
-        path:"properties/:id",
-        element:<PrivateRoute><AllPropertiesDetails/></PrivateRoute>,
+        path: "properties/:id",
+        element: (
+          <PrivateRoute>
+            <AllPropertiesDetails />
+          </PrivateRoute>
+        ),
       },
     ],
   },
   {
     path: "/",
+    errorElement: <ErrorPage />,
     element: <AuthLayout />,
     children: [
       {
@@ -67,73 +78,75 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
+    errorElement: <ErrorPage />,
     element: (
       <PrivateRoute>
         <DashBoardLayout />
       </PrivateRoute>
     ),
     children: [
-      { path: "admin",
+      {
+        path: "admin",
         element: <AdminDashBoard />,
         children: [
           {
-            index:true,
-            element: <Profile/>
+            index: true,
+            element: <Profile />,
           },
           {
             path: "profile",
-            element: <Profile/>
+            element: <Profile />,
           },
           {
             path: "manage-reviews",
-            element: <ManageReviews/>
+            element: <ManageReviews />,
           },
           {
             path: "manage-properties",
-            element: <ManageProperty/>
+            element: <ManageProperty />,
           },
           {
             path: "manage-users",
-            element: <ManageUser/>
-          }
-        ]
-        
+            element: <ManageUser />,
+          },
+        ],
       },
-      { path: "agent",
+      {
+        path: "agent",
         element: <AgentDashBoard />,
         children: [
           {
-            index:true,
-            element:<AgentProfile/>,
+            index: true,
+            element: <AgentProfile />,
           },
           {
-            path:"profile",
-            element:<AgentProfile/>,
+            path: "profile",
+            element: <AgentProfile />,
           },
           {
             path: "add-property",
-            element:<AddProperty/>,
+            element: <AddProperty />,
           },
           {
             path: "my-properties",
-            element:<MyProperty/>,
+            element: <MyProperty />,
           },
           {
             path: "sold-properties",
-            element:<SoldProperties/>,
+            element: <SoldProperties />,
           },
           {
             path: "requested-properties",
-            element:<RequestedProperties/>
+            element: <RequestedProperties />,
           },
-        ]
-
+        ],
       },
-      { path: "user",
+      {
+        path: "user",
         element: <UserDashBoard />,
         children: [
           {
-            index:true,
+            index: true,
             element: <MyProfile />,
           },
           {
@@ -160,7 +173,7 @@ export const router = createBrowserRouter([
             path: "bought",
             element: <PropertyBought />,
           },
-        ]
+        ],
       },
     ],
   },
