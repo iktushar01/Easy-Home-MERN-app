@@ -6,6 +6,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaSearch,
+  FaSortAmountDown,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const AllProperties = () => {
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState("default");
 
   useEffect(() => {
     axiosSecure
@@ -31,28 +33,52 @@ const AllProperties = () => {
   }, [axiosSecure]);
 
   useEffect(() => {
-    const filtered = properties.filter((property) =>
-      property.location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filtered = [...properties];
+    
+    // Apply search filter
+    if (searchTerm) {
+      filtered = filtered.filter((property) =>
+        property.location.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply sorting
+    filtered = sortProperties(filtered, sortOption);
+
     setFilteredProperties(filtered);
-  }, [searchTerm, properties]);
+  }, [searchTerm, properties, sortOption]);
+
+  const sortProperties = (properties, option) => {
+    switch (option) {
+      case "price-low-high":
+        return [...properties].sort((a, b) => a.minPrice - b.minPrice);
+      case "price-high-low":
+        return [...properties].sort((a, b) => b.maxPrice - a.maxPrice);
+      case "price-range-low":
+        return [...properties].sort((a, b) => (a.maxPrice - a.minPrice) - (b.maxPrice - b.minPrice));
+      case "price-range-high":
+        return [...properties].sort((a, b) => (b.maxPrice - b.minPrice) - (a.maxPrice - a.minPrice));
+      default:
+        return properties;
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-primary mb-3">Explore Properties</h2>
         <div className="w-20 h-1 bg-primary mx-auto"></div>
       </div>
 
-      {/* Search Bar */}
-      <div className="mb-8 max-w-2xl mx-auto">
-        <div className="relative">
+      {/* Search and Sort Controls */}
+      <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <div className="relative w-full md:w-1/2">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FaSearch  />
+            <FaSearch className="text-gray-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-gray-900 rounded-lg  shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg  shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="Search by location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -66,10 +92,28 @@ const AllProperties = () => {
             </button>
           )}
         </div>
-        <p className="text-sm text-gray-500 mt-2">
-          {filteredProperties.length} properties found
-        </p>
+
+        <div className="w-full md:w-auto">
+          <div className="flex items-center gap-2">
+            <FaSortAmountDown className="text-gray-400" />
+            <select
+              className="select select-bordered w-full max-w-xs"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="default">Default Sorting</option>
+              <option value="price-low-high">Price: Low to High</option>
+              <option value="price-high-low">Price: High to Low</option>
+              <option value="price-range-low">Price Range: Narrowest</option>
+              <option value="price-range-high">Price Range: Widest</option>
+            </select>
+          </div>
+        </div>
       </div>
+
+      <p className="text-sm text-gray-500 mb-4">
+        {filteredProperties.length} properties found
+      </p>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -78,14 +122,17 @@ const AllProperties = () => {
       ) : filteredProperties.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl font-medium text-gray-600">
-            No properties found matching your search.
+            No properties found matching your criteria.
           </h3>
-          {searchTerm && (
+          {(searchTerm || sortOption !== "default") && (
             <button
               className="mt-4 btn btn-primary"
-              onClick={() => setSearchTerm("")}
+              onClick={() => {
+                setSearchTerm("");
+                setSortOption("default");
+              }}
             >
-              Clear search
+              Reset filters
             </button>
           )}
         </div>
