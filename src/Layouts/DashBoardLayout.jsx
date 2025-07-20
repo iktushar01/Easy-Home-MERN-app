@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import ThemeToggle from "../Shared/ThemeToggle/ThemeToggle";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "../Shared/ScrollToTop/ScrollToTop";
 
 const DashBoardLayout = () => {
   const { user, loading } = useAuth();
@@ -53,8 +54,8 @@ const DashBoardLayout = () => {
 
   return (
     <div>
-            <Toaster />
-
+      <Toaster />
+      <ScrollToTop />
       <div className="flex items-center justify-center gap-3">
         <Logo />
         <ThemeToggle />
