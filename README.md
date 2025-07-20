@@ -1,15 +1,12 @@
 # 🏡 Real Estate Platform - MERN Stack
-
-> Assignment Category: `Assignment12_category_008`  
+  
 > Built With: **MERN Stack** (MongoDB, Express.js, React, Node.js)
 
 ---
 
 ## 🔗 Live Project Links
 
-- 🌐 **Live Site:** [your-live-site-url.com](https://your-live-site-url.com)
-- 💻 **Client GitHub:** [github.com/yourusername/client-repo](https://github.com/yourusername/client-repo)
-- 🖥️ **Server GitHub:** [github.com/yourusername/server-repo](https://github.com/yourusername/server-repo)
+- 🌐 **Live Site:** [LIVE SITE ](https://easy-home-5ec20.web.app/)
 
 ---
 
