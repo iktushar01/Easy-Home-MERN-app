@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 
 const axiosSecure = axios.create({
-    baseURL : `http://localhost:4000`
+    baseURL : `https://realterra-server.vercel.app`
 })
 
 const useAxiosSecure = () => {
