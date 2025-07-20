@@ -28,12 +28,9 @@ const AdvertisementSection = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 lg:py-20">
       <div className="text-center mb-12 lg:mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-          Featured <span className="text-secondary">Properties</span>
+          Featured <span className="text-secondary animate-pulse">Properties</span>
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-4 rounded-full"></div>
-        <p className="text-lg text-base-content/80 max-w-2xl mx-auto">
-          Discover our exclusive collection of premium properties curated just for you
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">

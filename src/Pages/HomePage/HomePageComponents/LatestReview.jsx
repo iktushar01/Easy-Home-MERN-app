@@ -25,7 +25,7 @@ const LatestReview = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <span className="loading loading-spinner loading-lg text-primary "></span>
       </div>
     );
   }
@@ -34,7 +34,7 @@ const LatestReview = () => {
     return (
       <div className="text-center py-16 bg-base-200 rounded-xl max-w-2xl mx-auto">
         <div className="flex justify-center mb-4">
-          <FaStar className="text-4xl text-primary/30" />
+          <FaStar className="text-4xl text-primary " />
         </div>
         <h3 className="text-xl font-medium text-base-content">No reviews yet</h3>
         <p className="text-base-content/70 mt-2">
@@ -48,7 +48,7 @@ const LatestReview = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-          Customers <span className="text-secondary">Reviews</span>
+          Customers <span className="text-secondary animate-pulse">Reviews</span>
         </h2>
        <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-4 rounded-full"></div>
       </div>
