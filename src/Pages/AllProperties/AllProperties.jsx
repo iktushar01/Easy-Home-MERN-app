@@ -9,6 +9,7 @@ import {
   FaSortAmountDown,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../../Componens/Buttons/LoadingSpinner";
 
 const AllProperties = () => {
   const axiosSecure = useAxiosSecure();
@@ -63,6 +64,11 @@ const AllProperties = () => {
     }
   };
 
+  // Show loading spinner while data is loading
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="max-w-7xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
@@ -78,7 +84,7 @@ const AllProperties = () => {
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg  shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="Search by location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -115,11 +121,7 @@ const AllProperties = () => {
         {filteredProperties.length} properties found
       </p>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : filteredProperties.length === 0 ? (
+      {filteredProperties.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl font-medium text-gray-600">
             No properties found matching your criteria.

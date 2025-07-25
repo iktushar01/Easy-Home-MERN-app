@@ -6,6 +6,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import ThemeToggle from "../Shared/ThemeToggle/ThemeToggle";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "../Shared/ScrollToTop/ScrollToTop";
+import LoadingSpinner from "../Componens/Buttons/LoadingSpinner";
 
 const DashBoardLayout = () => {
   const { user, loading } = useAuth();
@@ -49,7 +50,7 @@ const DashBoardLayout = () => {
   }, [user, loading, navigate, location.pathname]);
 
   if (loading || !role) {
-    return <p className="text-center mt-10">Loading dashboard...</p>;
+    return <LoadingSpinner/>
   }
 
   return (
