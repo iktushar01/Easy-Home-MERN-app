@@ -1,9 +1,13 @@
 import React from "react";
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ fullScreen = true }) => {
   return (
-    <div>
-      <span className="loading loading-spinner text-primary"></span>
+    <div className={`flex justify-center items-center ${fullScreen ? "min-h-screen" : ""}`}>
+      <span 
+        className="loading loading-spinner text-primary" 
+        role="status"
+        aria-label="Loading"
+      ></span>
     </div>
   );
 };
