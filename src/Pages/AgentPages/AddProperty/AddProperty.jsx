@@ -46,7 +46,7 @@ const AddProperty = () => {
         minPrice: parseFloat(data.minPrice),
         maxPrice: parseFloat(data.maxPrice),
         image: imageUrl,
-        agentImage: user?.photoURL || "",
+        agentImage: user?.photoURL || "https://i.postimg.cc/JhcCVk8q/Pngtree-user-profile-avatar-13369988.png",
         agentName: user?.displayName || "",
         agentEmail: user?.email || "",
       };
