@@ -54,8 +54,8 @@ const FAQ = () => {
   });
 
   return (
-    <section className="py-16 px-4 md:px-16 bg-base-100">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-16 px-4 md:px-16 bg-base-300">
+      <div className="max-w-7xl bg-base-300 mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Frequently Asked Questions

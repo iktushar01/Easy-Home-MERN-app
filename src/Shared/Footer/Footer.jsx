@@ -5,8 +5,8 @@ import Logo from "../Logo/Logo";
 
 const Footer = () => {
   return (
-    <footer className="bg-base-200 text-base-content px-6 py-8 mt-12">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-base-300 text-base-content px-6 py-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Logo & Description */}
         <div>

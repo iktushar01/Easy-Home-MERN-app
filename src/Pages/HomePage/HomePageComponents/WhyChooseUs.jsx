@@ -37,7 +37,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto py-20 px-4 md:px-16 bg-base-100">
+    <section className="max-w-7xl mx-auto bg-base-300 py-20 px-4 md:px-16">
       <div className="max-w-3xl mx-auto text-center mb-16 animate-fade-down">
         <h2 className="text-4xl md:text-5xl font-bold text-base-content mb-4">
           Why <span className="text-secondary animate-pulse">Choose Us</span>

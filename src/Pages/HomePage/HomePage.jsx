@@ -7,7 +7,7 @@ import FAQ from './HomePageComponents/FAQ';
 
 const HomePage = () => {
     return (
-        <div>
+        <div className='bg-base-300'>
             <Slider></Slider>
             <AdvertisementSection/>
             <LatestReview/>
