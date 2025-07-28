@@ -3,6 +3,7 @@ import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-hot-toast';
 import { FaDollarSign, FaHome, FaChartLine, FaMoneyBillWave, FaCalendarAlt, FaUser, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import LoadingSpinner from '../../../Componens/Buttons/LoadingSpinner';
 
 const SoldProperties = () => {
   const { user } = useAuth();
@@ -51,9 +52,7 @@ const SoldProperties = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
+      <LoadingSpinner/>
     );
   }
 

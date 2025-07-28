@@ -4,6 +4,7 @@ import { FaEdit, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../Componens/Buttons/LoadingSpinner';
 
 const MyProperty = () => {
   const { user } = useAuth();
@@ -66,7 +67,7 @@ const MyProperty = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-8">Loading...</div>;
+  if (loading) return <LoadingSpinner/>;
   if (error) return <div className="text-center py-8 text-error">Error: {error}</div>;
 
   return (

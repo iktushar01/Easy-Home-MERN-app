@@ -3,6 +3,7 @@ import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import LoadingSpinner from '../../../Componens/Buttons/LoadingSpinner';
 
 const RequestedProperties = () => {
   const { user } = useAuth();
@@ -76,9 +77,7 @@ const RequestedProperties = () => {
   };
 
   if (loading) return (
-    <div className="flex justify-center items-center min-h-[200px]">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
+    <LoadingSpinner/>
   );
 
   if (offers.length === 0) return (
