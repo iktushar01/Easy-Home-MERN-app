@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaStar, FaTrash, FaUser, FaEnvelope, FaShieldAlt, FaHome } from "react-icons/fa";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Componens/Buttons/LoadingSpinner";
 
 const MyReview = () => {
   const { user, loading: authLoading } = useAuth();
@@ -74,9 +75,7 @@ const MyReview = () => {
   };
 
   if (loading) return (
-    <div className="flex justify-center items-center min-h-[300px]">
-      <span className="loading loading-spinner loading-lg text-primary"></span>
-    </div>
+    <LoadingSpinner/>
   );
 
   return (

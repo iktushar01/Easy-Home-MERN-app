@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaTrash, FaHandshake, FaMapMarkerAlt, FaDollarSign } from "react-icons/fa";
+import LoadingSpinner from "../../../Componens/Buttons/LoadingSpinner";
 
 const WishList = () => {
   const { user } = useAuth();
@@ -69,9 +70,7 @@ const WishList = () => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
-        </div>
+        <LoadingSpinner/>
       ) : wishlist.length === 0 ? (
         <div className="text-center py-16 bg-base-200 rounded-xl">
           <div className="flex justify-center mb-4">
