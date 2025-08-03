@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaCamera } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -9,6 +9,8 @@ import useAuth from "../../hooks/useAuth";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { updateProfile } from "firebase/auth";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const {
@@ -23,35 +25,64 @@ const Register = () => {
   const navigate = useNavigate();
   const from = location.state?.from || "/";
   const axiosSecure = useAxiosSecure();
+  const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY; 
 
   const password = watch("password");
-  const onSubmit = (data) => {
-    console.log(data);
 
-    createUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
+  const onSubmit = async (data) => {
+    try {
+      let photoURL = "https://i.postimg.cc/JhcCVk8q/Pngtree-user-profile-avatar-13369988.png"; // Default avatar
 
-        // Update the user's profile with displayName
-        return updateProfile(result.user, {
-          displayName: data.fullName,
-        }).then(() => {
-          const userInfo = {
-            displayName: data.fullName,
-            email: data.email,
-            role: "user",
-          };
+      // Upload image if provided
+      if (data.image && data.image[0]) {
+        const imageFile = data.image[0];
+        const formData = new FormData();
+        formData.append("image", imageFile);
 
-          return axiosSecure.post("/users", userInfo);
-        });
-      })
-      .then((res) => {
-        console.log("User saved in DB:", res.data);
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        console.error("Error during registration:", error);
+        const res = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+          formData
+        );
+        photoURL = res.data.data.url;
+      }
+
+      // Create user
+      const userCredential = await createUser(data.email, data.password);
+      const user = userCredential.user;
+
+      // Update user profile with name and photo
+      await updateProfile(user, {
+        displayName: data.fullName,
+        photoURL: photoURL
       });
+
+      // Save user info to database
+      const userInfo = {
+        displayName: data.fullName,
+        email: data.email,
+        photoURL: photoURL,
+        role: "user",
+      };
+
+      await axiosSecure.post("/users", userInfo);
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "Your account has been created successfully",
+        confirmButtonColor: "#3b82f6",
+      });
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error("Error during registration:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message || "Something went wrong during registration",
+        confirmButtonColor: "#3b82f6",
+      });
+    }
   };
 
   return (
@@ -98,6 +129,41 @@ const Register = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
+              {/* Profile Picture Upload */}
+              <div className="flex flex-col items-center mb-4">
+                <div className="relative w-24 h-24 mb-4">
+                  <img
+                    id="preview"
+                    src="https://i.postimg.cc/JhcCVk8q/Pngtree-user-profile-avatar-13369988.png"
+                    alt="Profile preview"
+                    className="w-full h-full rounded-full object-cover border-4 border-white shadow"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className="absolute bottom-0 right-0 bg-primary p-2 rounded-full cursor-pointer hover:bg-primary-focus transition"
+                  >
+                    <FaCamera className="text-white" />
+                  </label>
+                </div>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  {...register("image")}
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        document.getElementById('preview').src = event.target.result;
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+                    }
+                  }}
+                />
+                <p className="text-sm text-gray-500">Upload profile picture (optional)</p>
+              </div>
+
               {/* Name Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
