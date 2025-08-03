@@ -1,38 +1,50 @@
 import { useState } from "react";
-import { FiChevronDown, FiChevronUp, FiMail, FiMessageSquare, FiHelpCircle } from "react-icons/fi";
+import {
+  FiChevronDown,
+  FiChevronUp,
+  FiMail,
+  FiMessageSquare,
+  FiHelpCircle,
+} from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
     question: "How do I buy a property?",
-    answer: "Our property purchase process is simple and secure. First, browse our listings and add properties to your wishlist. When you find your dream home, you can make an offer directly through our platform. Once the agent accepts your offer, you'll proceed to payment through our secure Stripe integration. Our team will guide you through every step of the transaction.",
-    category: "Buying"
+    answer:
+      "Our property purchase process is simple and secure. First, browse our listings and add properties to your wishlist. When you find your dream home, you can make an offer directly through our platform. Once the agent accepts your offer, you'll proceed to payment through our secure Stripe integration. Our team will guide you through every step of the transaction.",
+    category: "Buying",
   },
   {
     question: "Can I trust the agents on your platform?",
-    answer: "Absolutely. All agents undergo a rigorous verification process including license verification, background checks, and client reviews. We also feature top-rated agents with proven track records. Each agent profile displays their transaction history, client ratings, and response times for full transparency.",
-    category: "Agents"
+    answer:
+      "Absolutely. All agents undergo a rigorous verification process including license verification, background checks, and client reviews. We also feature top-rated agents with proven track records. Each agent profile displays their transaction history, client ratings, and response times for full transparency.",
+    category: "Agents",
   },
   {
     question: "How do I become a verified agent?",
-    answer: "To join our network of professional agents, create an account and submit your real estate license and professional references. Our team reviews applications within 2 business days. Once approved, you'll gain access to our agent dashboard, lead management tools, and marketing resources to grow your business.",
-    category: "Agents"
+    answer:
+      "To join our network of professional agents, create an account and submit your real estate license and professional references. Our team reviews applications within 2 business days. Once approved, you'll gain access to our agent dashboard, lead management tools, and marketing resources to grow your business.",
+    category: "Agents",
   },
   {
     question: "Is my payment information secure?",
-    answer: "Security is our top priority. We use bank-level encryption and Stripe's certified payment processing for all transactions. Your payment details are never stored on our servers. Additionally, we offer optional two-factor authentication for added security on your account.",
-    category: "Payments"
+    answer:
+      "Security is our top priority. We use bank-level encryption and Stripe's certified payment processing for all transactions. Your payment details are never stored on our servers. Additionally, we offer optional two-factor authentication for added security on your account.",
+    category: "Payments",
   },
   {
     question: "What fees can I expect when buying?",
-    answer: "Our platform charges a flat 1% transaction fee (capped at $5,000) for buyers. Additional costs may include standard closing costs (typically 2-5% of purchase price), inspection fees, and title insurance. We provide a detailed cost breakdown for each property and connect you with trusted service providers for competitive rates.",
-    category: "Buying"
+    answer:
+      "Our platform charges a flat 1% transaction fee (capped at $5,000) for buyers. Additional costs may include standard closing costs (typically 2-5% of purchase price), inspection fees, and title insurance. We provide a detailed cost breakdown for each property and connect you with trusted service providers for competitive rates.",
+    category: "Buying",
   },
   {
     question: "How do property valuations work?",
-    answer: "Our AI-powered valuation tool analyzes hundreds of data points including recent sales, neighborhood trends, and property features. For precise valuations, we recommend our network of certified appraisers who offer discounted rates to our clients. All valuations include detailed reports explaining the methodology.",
-    category: "Valuation"
-  }
+    answer:
+      "Our AI-powered valuation tool analyzes hundreds of data points including recent sales, neighborhood trends, and property features. For precise valuations, we recommend our network of certified appraisers who offer discounted rates to our clients. All valuations include detailed reports explaining the methodology.",
+    category: "Valuation",
+  },
 ];
 
 const FAQ = () => {
@@ -44,12 +56,14 @@ const FAQ = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const categories = ["All", ...new Set(faqs.map(faq => faq.category))];
+  const categories = ["All", ...new Set(faqs.map((faq) => faq.category))];
 
-  const filteredFaqs = faqs.filter(faq => {
-    const matchesCategory = activeCategory === "All" || faq.category === activeCategory;
-    const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredFaqs = faqs.filter((faq) => {
+    const matchesCategory =
+      activeCategory === "All" || faq.category === activeCategory;
+    const matchesSearch =
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -61,7 +75,8 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-base-content/80 max-w-2xl mx-auto">
-            Find answers to common questions about buying, selling, and working with our platform
+            Find answers to common questions about buying, selling, and working
+            with our platform
           </p>
         </div>
 
@@ -76,9 +91,17 @@ const FAQ = () => {
                   <button
                     key={category}
                     onClick={() => setActiveCategory(category)}
-                    className={`w-full text-left px-4 py-2 rounded-lg transition-all ${activeCategory === category ? 'bg-primary text-primary-content' : 'hover:bg-base-300'}`}
+                    className={`w-full text-left px-4 py-2 rounded-lg transition-all ${
+                      activeCategory === category
+                        ? "bg-primary text-primary-content"
+                        : "hover:bg-base-300"
+                    }`}
                   >
-                    {category} ({category === "All" ? faqs.length : faqs.filter(f => f.category === category).length})
+                    {category} (
+                    {category === "All"
+                      ? faqs.length
+                      : faqs.filter((f) => f.category === category).length}
+                    )
                   </button>
                 ))}
               </div>
@@ -89,7 +112,8 @@ const FAQ = () => {
                 <FiMessageSquare className="text-secondary" /> Need Help?
               </h3>
               <p className="text-sm mb-4">
-                Can't find what you're looking for? Our support team is available 24/7.
+                Can't find what you're looking for? Our support team is
+                available 24/7.
               </p>
               <button className="btn btn-secondary btn-sm w-full">
                 <FiMail className="mr-2" /> Contact Support
@@ -146,7 +170,7 @@ const FAQ = () => {
                       {openIndex === index && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
+                          animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
@@ -169,7 +193,8 @@ const FAQ = () => {
                   <div className="text-5xl mb-4">🔍</div>
                   <h3 className="text-xl font-medium mb-2">No results found</h3>
                   <p className="text-base-content/70">
-                    Try adjusting your search or filter to find what you're looking for
+                    Try adjusting your search or filter to find what you're
+                    looking for
                   </p>
                 </div>
               )}
@@ -180,7 +205,8 @@ const FAQ = () => {
         <div className="bg-primary/5 p-8 rounded-xl text-center mt-12">
           <h3 className="text-2xl font-semibold mb-4">Still have questions?</h3>
           <p className="mb-6 max-w-2xl mx-auto">
-            Our customer support team is available 24/7 to help with any questions about our platform or the real estate process.
+            Our customer support team is available 24/7 to help with any
+            questions about our platform or the real estate process.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <button className="btn btn-primary px-8">

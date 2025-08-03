@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const {
@@ -24,7 +25,6 @@ const Register = () => {
   const axiosSecure = useAxiosSecure();
 
   const password = watch("password");
-
   const onSubmit = (data) => {
     console.log(data);
 
@@ -32,24 +32,25 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
 
-        const userInfo = {
-          name: data.fullName,
-          email: data.email,
-          role: "user",
-        };
+        // Update the user's profile with displayName
+        return updateProfile(result.user, {
+          displayName: data.fullName,
+        }).then(() => {
+          const userInfo = {
+            displayName: data.fullName,
+            email: data.email,
+            role: "user",
+          };
 
-        axiosSecure
-          .post("/users", userInfo)
-          .then((res) => {
-            console.log("User saved in DB:", res.data);
-            navigate(from, { replace: true });
-          })
-          .catch((err) => {
-            console.error("Failed to save user in DB", err);
-          });
+          return axiosSecure.post("/users", userInfo);
+        });
+      })
+      .then((res) => {
+        console.log("User saved in DB:", res.data);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error during registration:", error);
       });
   };
 
