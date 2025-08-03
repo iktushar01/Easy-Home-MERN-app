@@ -46,7 +46,7 @@ const Profile = () => {
             <div className="avatar relative">
               <div className="w-32 h-32 rounded-full ring ring-white ring-offset-2 ring-offset-base-100 shadow-lg">
                 <img
-                  src={photoURL || "/default-profile.png"}
+                  src={photoURL || "https://i.postimg.cc/C5tvF7B2/Pngtree-user-profile-avatar-13369988.png"}
                   alt={displayName || "User Profile"}
                 />
               </div>
