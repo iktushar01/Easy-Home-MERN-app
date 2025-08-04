@@ -19,6 +19,7 @@ const GoogleLogin = ({ from }) => {
           name: user.displayName,
           email,
           role: "user",
+          photoURL: user.photoURL || "https://i.postimg.cc/JhcCVk8q/Pngtree-user-profile-avatar-13369988.png",
         };
 
         // Check if user exists
