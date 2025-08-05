@@ -174,7 +174,7 @@ const MyProperty = () => {
 
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">My Properties</h1>
-        <Link to="/dashboard/add-property" className="btn btn-primary">
+        <Link to="/dashboard/agent/add-property" className="btn btn-primary">
           Add New Property
         </Link>
       </div>
@@ -183,7 +183,7 @@ const MyProperty = () => {
         <div className="text-center py-8">
           <h2 className="text-2xl font-bold">No Properties Found</h2>
           <p className="mt-2">You haven't added any properties yet.</p>
-          <Link to="/dashboard/add-property" className="btn btn-primary mt-4">
+          <Link to="/dashboard/agent/add-property" className="btn btn-primary mt-4">
             Add New Property
           </Link>
         </div>
