@@ -67,7 +67,7 @@ const CheckoutForm = ({ offer }) => {
       });
 
       toast.success("Payment successful!");
-      navigate("/dashboard/property-bought");
+      navigate("/dashboard/user/bought");
     } catch (err) {
       setError(err.message || "Payment failed. Please try again.");
       toast.error(err.message || "Payment failed");
