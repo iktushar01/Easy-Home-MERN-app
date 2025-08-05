@@ -19,7 +19,7 @@ const RequestedProperties = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axiosSecure.get(`/agent-offers/${user?.email}`);
+        const res = await axiosSecure.get(`/offers`);
         if (res.data) {
           setOffers(res.data);
         }
