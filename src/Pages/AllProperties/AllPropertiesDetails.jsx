@@ -142,35 +142,35 @@ const AllPropertiesDetails = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Property Header */}
-      <div className="bg-base-100 rounded-2xl shadow-xl overflow-hidden mb-8">
-        <div className="relative h-80 md:h-96 w-full">
+      <div className="bg-base-100 rounded-xl md:rounded-2xl shadow-md md:shadow-xl overflow-hidden mb-6 md:mb-8">
+        <div className="relative h-64 sm:h-80 md:h-96 w-full">
           <img
             src={image}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
             loading="lazy"
           />
-          <div className="absolute bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+          <div className="absolute bottom-4 right-4 bg-primary text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold shadow-lg">
             Featured Property
           </div>
         </div>
 
-        <div className="p-6 md:p-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">
+        <div className="p-4 sm:p-6 md:p-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
             {title}
           </h2>
-          <div className="flex items-center gap-2 text-lg mb-4">
+          <div className="flex items-center gap-2 text-base sm:text-lg mb-3 sm:mb-4">
             <FaMapMarkerAlt className="text-secondary" />
             <span className="text-base-content/80">{location}</span>
           </div>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6">
             <div>
-              <span className="text-3xl font-bold text-primary">
+              <span className="text-2xl sm:text-3xl font-bold text-primary">
                 ৳{minPrice}
               </span>
               {maxPrice && (
-                <span className="text-lg text-base-content/70">
+                <span className="text-base sm:text-lg text-base-content/70">
                   {" "}
                   - ৳{maxPrice}
                 </span>
@@ -178,28 +178,28 @@ const AllPropertiesDetails = () => {
             </div>
             <button
               onClick={handleAddToWishlist}
-              className="btn btn-error btn-outline hover:btn-error gap-2"
+              className="btn btn-error btn-outline hover:btn-error gap-2 w-full sm:w-auto"
             >
               <FaHeart />
               Add to Wishlist
             </button>
           </div>
 
-          <p className="text-base-content/80 mb-6 leading-relaxed text-lg">
+          <p className="text-base-content/80 mb-4 sm:mb-6 leading-relaxed text-base sm:text-lg">
             {description}
           </p>
         </div>
       </div>
 
       {/* Reviews Section */}
-      <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-secondary">
+      <div className="bg-base-100 rounded-xl md:rounded-2xl shadow-md md:shadow-xl p-4 sm:p-6 md:p-8 mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6">
+          <h3 className="text-xl sm:text-2xl font-bold text-secondary">
             Customer Reviews
           </h3>
           <button
             onClick={() => setIsReviewModalOpen(true)}
-            className="btn btn-primary gap-2"
+            className="btn btn-primary gap-2 w-full sm:w-auto"
           >
             <FaStar />
             Write a Review
@@ -207,25 +207,25 @@ const AllPropertiesDetails = () => {
         </div>
 
         {reviews.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-base-content/70 text-lg mb-4">
+          <div className="text-center py-6 sm:py-8">
+            <p className="text-base-content/70 text-base sm:text-lg mb-4">
               No reviews yet. Be the first to review!
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {reviews.map((review) => (
               <div
                 key={review._id}
-                className="border-b border-base-200 pb-6 last:border-0"
+                className="border-b border-base-200 pb-4 sm:pb-6 last:border-0"
               >
-                <div className="flex justify-between items-start mb-4 gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                   {/* User Info */}
                   <div className="flex items-start gap-3">
                     <img
                       src={review.userPhoto}
                       alt={`${review.email}'s profile`}
-                      className="w-10 h-10 rounded-full object-cover border border-base-300"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-base-300"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src =
@@ -233,10 +233,10 @@ const AllPropertiesDetails = () => {
                       }}
                     />
                     <div>
-                      <h4 className="font-semibold text-base-content">
+                      <h4 className="font-semibold text-base sm:text-base-content">
                         {review.email}
                       </h4>
-                      <div className="text-sm text-base-content/60">
+                      <div className="text-xs sm:text-sm text-base-content/60">
                         {new Date(review.createdAt).toLocaleDateString(
                           "en-US",
                           {
@@ -255,7 +255,7 @@ const AllPropertiesDetails = () => {
                       {[...Array(5)].map((_, i) => (
                         <FaStar
                           key={i}
-                          className={`text-lg ${
+                          className={`text-sm sm:text-lg ${
                             i < review.rating
                               ? "text-yellow-400"
                               : "text-base-content/20"
@@ -263,14 +263,16 @@ const AllPropertiesDetails = () => {
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-base-content/60 ml-1">
+                    <span className="text-xs sm:text-sm text-base-content/60 ml-1">
                       {review.rating.toFixed(1)}
                     </span>
                   </div>
                 </div>
 
                 {/* Review Text */}
-                <p className="text-base-content/90 pl-13">{review.review}</p>
+                <p className="text-base-content/90 pl-0 sm:pl-13 text-sm sm:text-base">
+                  {review.review}
+                </p>
               </div>
             ))}
           </div>
@@ -278,26 +280,26 @@ const AllPropertiesDetails = () => {
       </div>
 
       {/* Agent Info */}
-      <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 className="text-2xl font-bold text-secondary mb-4">
+      <div className="bg-base-100 rounded-xl md:rounded-2xl shadow-md md:shadow-xl p-4 sm:p-6 md:p-8">
+        <h3 className="text-xl sm:text-2xl font-bold text-secondary mb-3 sm:mb-4">
           Agent Information
         </h3>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
           <div className="avatar">
-            <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <div className="w-14 sm:w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img
                 src={property.agentImage || "https://i.ibb.co/5GzXkwq/user.png"}
                 alt={agentName}
               />
             </div>
           </div>
-          <div className="space-y-2">
-            <p className="flex items-center gap-3 text-lg">
-              <FaUser className="text-primary" />
+          <div className="space-y-1 sm:space-y-2">
+            <p className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
+              <FaUser className="text-primary text-sm sm:text-base" />
               <span className="font-medium">Name:</span> {agentName}
             </p>
-            <p className="flex items-center gap-3 text-lg">
-              <FaEnvelope className="text-primary" />
+            <p className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg">
+              <FaEnvelope className="text-primary text-sm sm:text-base" />
               <span className="font-medium">Email:</span>
               <a
                 href={`mailto:${agentEmail}`}
@@ -313,20 +315,20 @@ const AllPropertiesDetails = () => {
       {/* Review Modal */}
       {isReviewModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold">Write Your Review</h3>
+          <div className="bg-base-100 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl p-4 sm:p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold">Write Your Review</h3>
               <button
                 onClick={() => setIsReviewModalOpen(false)}
                 className="btn btn-ghost btn-circle"
               >
-                <FaTimes className="text-lg" />
+                <FaTimes className="text-base sm:text-lg" />
               </button>
             </div>
 
-            <div className="mb-6">
-              <label className="block mb-3 font-medium text-lg">Rating</label>
-              <div className="rating rating-lg">
+            <div className="mb-4 sm:mb-6">
+              <label className="block mb-2 sm:mb-3 font-medium text-base sm:text-lg">Rating</label>
+              <div className="rating rating-md sm:rating-lg">
                 {[5, 4, 3, 2, 1].map((value) => (
                   <input
                     key={value}
@@ -340,28 +342,28 @@ const AllPropertiesDetails = () => {
               </div>
             </div>
 
-            <div className="mb-6">
-              <label className="block mb-3 font-medium text-lg">
+            <div className="mb-4 sm:mb-6">
+              <label className="block mb-2 sm:mb-3 font-medium text-base sm:text-lg">
                 Your Review
               </label>
               <textarea
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
-                className="textarea textarea-bordered w-full h-40 text-lg"
+                className="textarea textarea-bordered w-full h-32 sm:h-40 text-base sm:text-lg"
                 placeholder="Share your experience with this property..."
               ></textarea>
             </div>
 
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-3 sm:gap-4">
               <button
                 onClick={() => setIsReviewModalOpen(false)}
-                className="btn btn-ghost px-6"
+                className="btn btn-ghost px-4 sm:px-6"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmitReview}
-                className="btn btn-primary px-6"
+                className="btn btn-primary px-4 sm:px-6"
                 disabled={!reviewText.trim()}
               >
                 Submit
