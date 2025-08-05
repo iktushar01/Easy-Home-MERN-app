@@ -80,7 +80,7 @@ const ManageReviews = () => {
 
   if (error) {
     return (
-      <div className="alert alert-error max-w-4xl mx-auto my-8">
+      <div className="alert alert-error max-w-4xl mx-4 sm:mx-auto my-8">
         <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -94,10 +94,10 @@ const ManageReviews = () => {
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-primary">Manage Reviews</h2>
-          <p className="text-sm opacity-70 mt-1">View and manage all property reviews</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-primary">Manage Reviews</h2>
+          <p className="text-xs sm:text-sm opacity-70 mt-1">View and manage all property reviews</p>
         </div>
         <div className="badge badge-lg badge-primary">
           {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
@@ -115,13 +115,13 @@ const ManageReviews = () => {
           </div>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((review) => (
             <div key={review._id} className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">
-              <div className="card-body p-5">
-                <div className="flex items-start gap-3 mb-4">
+              <div className="card-body p-4 sm:p-5">
+                <div className="flex items-start gap-3 mb-3 sm:mb-4">
                   <div className="avatar">
-                    <div className="w-12 h-12 rounded-full bg-base-200 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-base-200 flex items-center justify-center">
                       {review.userPhoto ? (
                         <img 
                           src={review.userPhoto} 
@@ -134,12 +134,12 @@ const ManageReviews = () => {
                           }}
                         />
                       ) : (
-                        <FaRegUserCircle className="text-2xl text-gray-400" />
+                        <FaRegUserCircle className="text-xl sm:text-2xl text-gray-400" />
                       )}
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{review.email}</p>
+                    <p className="text-xs sm:text-sm font-medium truncate">{review.email}</p>
                     <div className="flex items-center gap-1 mt-1">
                       {renderStars(review.rating)}
                       <span className="text-xs opacity-70">({review.rating}/5)</span>
@@ -147,13 +147,13 @@ const ManageReviews = () => {
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <p className="text-base-content/90 break-words">
+                <div className="mb-3 sm:mb-4">
+                  <p className="text-sm sm:text-base text-base-content/90 break-words">
                     {review.review || "No review text provided"}
                   </p>
                 </div>
 
-                <div className="flex justify-between items-center mt-auto pt-3 border-t border-base-200">
+                <div className="flex justify-between items-center mt-auto pt-2 sm:pt-3 border-t border-base-200">
                   <div className="text-xs opacity-70">
                     {new Date(review.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -163,7 +163,7 @@ const ManageReviews = () => {
                   </div>
                   <button
                     onClick={() => handleDelete(review._id)}
-                    className="btn btn-error btn-sm btn-outline"
+                    className="btn btn-error btn-xs sm:btn-sm btn-outline"
                   >
                     Delete
                   </button>
