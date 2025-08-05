@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FaUser, FaLock, FaCamera } from "react-icons/fa";
+import { FaUser, FaLock, FaCamera, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
@@ -26,6 +26,8 @@ const Register = () => {
   const from = location.state?.from || "/";
   const axiosSecure = useAxiosSecure();
   const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const password = watch("password");
 
@@ -42,7 +44,14 @@ const Register = () => {
     }
   };
 
-  // ✅ Form Submit
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const onSubmit = async (data) => {
     try {
       let photoURL =
@@ -59,17 +68,14 @@ const Register = () => {
         photoURL = res.data.data.url;
       }
 
-      // ✅ Firebase user create
       const userCredential = await createUser(data.email, data.password);
       const user = userCredential.user;
 
-      // ✅ Firebase profile update
       await updateProfile(user, {
         displayName: data.fullName,
         photoURL,
       });
 
-      // ✅ User database এ save
       await axiosSecure.post("/users", {
         displayName: data.fullName,
         email: data.email,
@@ -85,7 +91,7 @@ const Register = () => {
 
       navigate(from, { replace: true });
     } catch (error) {
-      console.error("❌ Registration Error:", error);
+      console.error("Registration Error:", error);
       Swal.fire({
         icon: "error",
         title: "Registration Failed",
@@ -95,13 +101,13 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row ">
+    <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side - Image */}
       <div
         className="w-full md:w-1/2 relative bg-cover bg-center flex items-center justify-center p-8"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')",
+            "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')",
         }}
       >
         <div className="absolute inset-0 bg-black/80"></div>
@@ -132,7 +138,7 @@ const Register = () => {
           <p className="mb-8">Create your account</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* ✅ Profile Picture Upload */}
+            {/* Profile Picture Upload */}
             <div className="flex flex-col items-center mb-4">
               <div className="relative w-24 h-24 mb-4">
                 <img
@@ -160,10 +166,10 @@ const Register = () => {
               </p>
             </div>
 
-            {/* ✅ Name Field */}
+            {/* Name Field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaUser className="h-5 w-5 " />
+                <FaUser className="h-5 w-5" />
               </div>
               <input
                 type="text"
@@ -178,10 +184,10 @@ const Register = () => {
               )}
             </div>
 
-            {/* ✅ Email Field */}
+            {/* Email Field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MdEmail className="h-5 w-5 " />
+                <MdEmail className="h-5 w-5" />
               </div>
               <input
                 type="email"
@@ -202,13 +208,13 @@ const Register = () => {
               )}
             </div>
 
-            {/* ✅ Password */}
+            {/* Password Field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaLock className="h-5 w-5" />
               </div>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -217,8 +223,19 @@ const Register = () => {
                   },
                 })}
                 placeholder="Password"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
               />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <FaEye className="h-5 w-5 text-gray-500" />
+                )}
+              </button>
               {errors.password && (
                 <p className="text-red-600 text-sm mt-1">
                   {errors.password.message}
@@ -226,21 +243,32 @@ const Register = () => {
               )}
             </div>
 
-            {/* ✅ Confirm Password */}
+            {/* Confirm Password Field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaLock className="h-5 w-5 " />
+                <FaLock className="h-5 w-5" />
               </div>
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   required: "Please confirm your password",
                   validate: (value) =>
                     value === password || "Passwords do not match",
                 })}
                 placeholder="Confirm Password"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
               />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                onClick={toggleConfirmPasswordVisibility}
+              >
+                {showConfirmPassword ? (
+                  <FaEyeSlash className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <FaEye className="h-5 w-5 text-gray-500" />
+                )}
+              </button>
               {errors.confirmPassword && (
                 <p className="text-red-600 text-sm mt-1">
                   {errors.confirmPassword.message}
@@ -248,7 +276,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* ✅ Submit Button */}
+            {/* Submit Button */}
             <div>
               <button
                 type="submit"
@@ -263,9 +291,12 @@ const Register = () => {
           <GoogleLogin from={from} />
 
           <div className="mt-6 text-center">
-            <p className="text-sm ">
+            <p className="text-sm">
               Already have an account?{" "}
-              <Link to="/login" className="font-medium text-primary hover:underline">
+              <Link
+                to="/login"
+                className="font-medium text-primary hover:underline"
+              >
                 Login
               </Link>
             </p>
