@@ -4,7 +4,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import LoadingSpinner from '../../../Componens/Buttons/LoadingSpinner';
-import { FaMapMarkerAlt, FaUser, FaEnvelope, FaDollarSign, FaCalendarAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaUser, FaEnvelope, FaDollarSign, FaCalendarAlt, FaCheck, FaTimes } from 'react-icons/fa';
 
 const RequestedProperties = () => {
   const { user } = useAuth();
@@ -60,8 +60,8 @@ const RequestedProperties = () => {
       text: "Are you sure you want to reject this offer? This action cannot be undone.",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6b7280',
       confirmButtonText: 'Yes, reject it',
       cancelButtonText: 'Cancel'
     });
@@ -85,15 +85,30 @@ const RequestedProperties = () => {
   };
 
   const getStatusBadge = (status) => {
-    const statusClasses = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      accepted: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
-      bought: 'bg-blue-100 text-blue-800'
+    const statusConfig = {
+      pending: { 
+        class: 'bg-amber-100 text-amber-800',
+        icon: null
+      },
+      accepted: { 
+        class: 'bg-green-100 text-green-800',
+        icon: <FaCheck className="mr-1" />
+      },
+      rejected: { 
+        class: 'bg-red-100 text-red-800',
+        icon: <FaTimes className="mr-1" />
+      },
+      bought: { 
+        class: 'bg-blue-100 text-blue-800',
+        icon: null
+      }
     };
     
+    const config = statusConfig[status] || { class: 'bg-gray-100 text-gray-800' };
+    
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses[status] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${config.class}`}>
+        {config.icon}
         {status}
       </span>
     );
@@ -104,16 +119,12 @@ const RequestedProperties = () => {
   if (error) {
     return (
       <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-red-50 border-l-4 border-red-500 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+        <div className="alert alert-error bg-red-50 text-red-800 shadow-lg">
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="ml-2">{error}</span>
           </div>
         </div>
       </div>
@@ -125,7 +136,7 @@ const RequestedProperties = () => {
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center py-12">
           <div className="text-6xl mb-4 text-gray-300">🏡</div>
-          <h3 className="text-lg font-medium text-gray-600">No property requests yet</h3>
+          <h3 className="text-xl font-medium text-gray-700">No property requests yet</h3>
           <p className="text-gray-500 mt-2">You haven't received any offers on your properties.</p>
         </div>
       </div>
@@ -135,53 +146,53 @@ const RequestedProperties = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Property Requests</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-blue-600">Property Requests</h1>
+        <p className="mt-2 text-gray-100">
           Manage offers made on your listed properties
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {offers.map((offer) => (
-          <div key={offer._id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+          <div key={offer._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100">
             <div className="relative h-48">
               <img
-                src={offer.propertyImage || 'https://via.placeholder.com/400x300?text=Property'}
+                src={offer.propertyImg || 'https://via.placeholder.com/400x300?text=Property'}
                 alt={offer.propertyTitle}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/400x300?text=Property';
                 }}
               />
-              <div className="absolute top-2 right-2">
+              <div className="absolute top-3 right-3">
                 {getStatusBadge(offer.status)}
               </div>
             </div>
 
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-2 truncate">
+            <div className="p-5">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
                 {offer.propertyTitle}
               </h2>
 
-              <div className="space-y-2 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <FaMapMarkerAlt className="mr-2 text-gray-400" />
+              <div className="space-y-3 text-gray-600">
+                <div className="flex items-start gap-3">
+                  <FaMapMarkerAlt className="mt-1 flex-shrink-0 text-gray-400" />
                   <span className="truncate">{offer.propertyLocation}</span>
                 </div>
 
-                <div className="flex items-center">
-                  <FaUser className="mr-2 text-gray-400" />
+                <div className="flex items-start gap-3">
+                  <FaUser className="mt-1 flex-shrink-0 text-gray-400" />
                   <span>{offer.buyerName}</span>
                 </div>
 
-                <div className="flex items-center">
-                  <FaEnvelope className="mr-2 text-gray-400" />
+                <div className="flex items-start gap-3">
+                  <FaEnvelope className="mt-1 flex-shrink-0 text-gray-400" />
                   <span className="truncate">{offer.buyerEmail}</span>
                 </div>
 
-                <div className="flex items-center">
-                  <FaDollarSign className="mr-2 text-gray-400" />
-                  <span className="font-medium">
+                <div className="flex items-start gap-3">
+                  <FaDollarSign className="mt-1 flex-shrink-0 text-gray-400" />
+                  <span className="font-medium text-gray-800">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',
@@ -191,8 +202,8 @@ const RequestedProperties = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center">
-                  <FaCalendarAlt className="mr-2 text-gray-400" />
+                <div className="flex items-start gap-3">
+                  <FaCalendarAlt className="mt-1 flex-shrink-0 text-gray-400" />
                   <span>
                     {new Date(offer.buyingDate).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -204,16 +215,16 @@ const RequestedProperties = () => {
               </div>
 
               {offer.status === "pending" && (
-                <div className="mt-4 flex justify-end space-x-2">
+                <div className="flex justify-end space-x-3 mt-5">
                   <button
                     onClick={() => handleAccept(offer._id)}
-                    className="px-3 py-1 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium transition-colors"
                   >
                     Accept
                   </button>
                   <button
                     onClick={() => handleReject(offer._id)}
-                    className="px-3 py-1 bg-red-600 text-white text-sm font-medium rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors"
                   >
                     Reject
                   </button>
