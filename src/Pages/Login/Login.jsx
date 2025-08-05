@@ -1,20 +1,19 @@
-import React from "react";
-import { FaLock } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Logo from "../../Shared/Logo/Logo";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggle from "../../Shared/ThemeToggle/ThemeToggle";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import GoogleLogin from "../../Shared/SocialLogin/GoogleLogin";
 
-
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const { signInUser } = useAuth();
   const location = useLocation();
-  console.log(location);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const from = location.state?.from || '/';
 
   const onSubmit = (data) => {
@@ -29,6 +28,11 @@ const Login = () => {
         console.error(error);
       });
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row ">
       {/* Left Side - Image */}
@@ -36,7 +40,7 @@ const Login = () => {
         className="w-full md:w-1/2 relative bg-cover bg-center flex items-center justify-center p-8"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')",
+            "url('https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')",
         }}
       >
         {/* Overlay */}
@@ -45,18 +49,21 @@ const Login = () => {
         <div className="text-white flex justify-center items-center flex-col text-center relative z-10">
           <div className="flex gap-3">
             <div>
-            <Logo className="text-white" />
-          </div>
-           <ThemeToggle />
+              <Logo className="text-white" />
+            </div>
+            <ThemeToggle />
           </div>
           <h2 className="text-5xl font-bold mt-6">Welcome Back</h2>
           <p className="my-2 text-blue-100">
             Find your perfect property with us
           </p>
-          <div className=" flex gap-2">
-           <Link to='/login'> <button className="btn btn-primary">login</button></Link>
-            <Link to='/register'><button className="btn btn-primary">Register</button></Link>
-           
+          <div className="flex gap-2">
+            <Link to='/login'> 
+              <button className="btn btn-primary">Login</button>
+            </Link>
+            <Link to='/register'>
+              <button className="btn btn-primary">Register</button>
+            </Link>
           </div>
         </div>
       </div>
@@ -64,15 +71,15 @@ const Login = () => {
       {/* Right Side - Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="w-full bg-base-200 max-w-md rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold  mb-2">Login</h1>
-          <p className=" mb-8">Please enter your credentials</p>
+          <h1 className="text-3xl font-bold mb-2">Login</h1>
+          <p className="mb-8">Please enter your credentials</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               {/* Email Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MdEmail className="h-5 w-5 " />
+                  <MdEmail className="h-5 w-5" />
                 </div>
                 <input
                   type="email"
@@ -86,15 +93,26 @@ const Login = () => {
               {/* Password Field */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 " />
+                  <FaLock className="h-5 w-5" />
                 </div>
                 <input
-                  type="password"
-                   {...register('password')}
+                  type={showPassword ? "text" : "password"}
+                  {...register('password')}
                   placeholder="Password"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                   required
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <FaEye className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
               </div>
             </div>
 
@@ -108,7 +126,7 @@ const Login = () => {
                 />
                 <label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm "
+                  className="ml-2 block text-sm"
                 >
                   Remember me
                 </label>
@@ -134,13 +152,12 @@ const Login = () => {
             </div>
           </form>
 
-            <div className="divider">OR</div>
+          <div className="divider">OR</div>
 
-            <GoogleLogin from = {from}/>
-
+          <GoogleLogin from={from} />
 
           <div className="mt-6 text-center">
-            <p className="text-sm ">
+            <p className="text-sm">
               Don't have an account?{" "}
               <Link
                 to="/register"
