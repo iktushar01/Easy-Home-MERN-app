@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   FaMapMarkerAlt,
-  FaMoneyBillWave,
   FaUser,
   FaEnvelope,
   FaHeart,
@@ -43,6 +42,7 @@ const AllPropertiesDetails = () => {
     try {
       const res = await axiosSecure.post("/reviews", {
         propertyId: id,
+        userPhoto: user?.photoURL,
         email: user?.email,
         review: reviewText,
         rating: Number(rating),
@@ -84,16 +84,23 @@ const AllPropertiesDetails = () => {
     fetchData();
   }, [axiosSecure, id]);
 
-  if (loading)
-    return (
-      <LoadingSpinner/>
-    );
+  if (loading) return <LoadingSpinner />;
   if (error)
     return (
       <div className="alert alert-error max-w-md mx-auto mt-20 shadow-lg">
         <div>
-          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current flex-shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <span>{error}</span>
         </div>
@@ -103,8 +110,18 @@ const AllPropertiesDetails = () => {
     return (
       <div className="alert alert-warning max-w-md mx-auto mt-20 shadow-lg">
         <div>
-          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current flex-shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
           <span>Property not found.</span>
         </div>
@@ -139,7 +156,9 @@ const AllPropertiesDetails = () => {
         </div>
 
         <div className="p-6 md:p-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">{title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">
+            {title}
+          </h2>
           <div className="flex items-center gap-2 text-lg mb-4">
             <FaMapMarkerAlt className="text-secondary" />
             <span className="text-base-content/80">{location}</span>
@@ -147,8 +166,15 @@ const AllPropertiesDetails = () => {
 
           <div className="flex items-center justify-between mb-6">
             <div>
-              <span className="text-3xl font-bold text-primary">৳{minPrice}</span>
-              {maxPrice && <span className="text-lg text-base-content/70"> - ৳{maxPrice}</span>}
+              <span className="text-3xl font-bold text-primary">
+                ৳{minPrice}
+              </span>
+              {maxPrice && (
+                <span className="text-lg text-base-content/70">
+                  {" "}
+                  - ৳{maxPrice}
+                </span>
+              )}
             </div>
             <button
               onClick={handleAddToWishlist}
@@ -159,15 +185,19 @@ const AllPropertiesDetails = () => {
             </button>
           </div>
 
-          <p className="text-base-content/80 mb-6 leading-relaxed text-lg">{description}</p>
+          <p className="text-base-content/80 mb-6 leading-relaxed text-lg">
+            {description}
+          </p>
         </div>
       </div>
 
       {/* Reviews Section */}
       <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8 mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-secondary">Customer Reviews</h3>
-          <button 
+          <h3 className="text-2xl font-bold text-secondary">
+            Customer Reviews
+          </h3>
+          <button
             onClick={() => setIsReviewModalOpen(true)}
             className="btn btn-primary gap-2"
           >
@@ -178,29 +208,69 @@ const AllPropertiesDetails = () => {
 
         {reviews.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-base-content/70 text-lg mb-4">No reviews yet. Be the first to review!</p>
+            <p className="text-base-content/70 text-lg mb-4">
+              No reviews yet. Be the first to review!
+            </p>
           </div>
         ) : (
           <div className="space-y-6">
             {reviews.map((review) => (
-              <div key={review._id} className="border-b border-base-200 pb-6 last:border-0">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h4 className="font-bold text-lg">{review.email}</h4>
-                    <div className="text-sm text-base-content/70">
-                      {new Date(review.createdAt).toLocaleDateString()}
+              <div
+                key={review._id}
+                className="border-b border-base-200 pb-6 last:border-0"
+              >
+                <div className="flex justify-between items-start mb-4 gap-4">
+                  {/* User Info */}
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={review.userPhoto}
+                      alt={`${review.email}'s profile`}
+                      className="w-10 h-10 rounded-full object-cover border border-base-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+                      }}
+                    />
+                    <div>
+                      <h4 className="font-semibold text-base-content">
+                        {review.email}
+                      </h4>
+                      <div className="text-sm text-base-content/60">
+                        {new Date(review.createdAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar
-                        key={i}
-                        className={`text-lg ${i < review.rating ? 'text-yellow-400' : 'text-base-content/30'}`}
-                      />
-                    ))}
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={`text-lg ${
+                            i < review.rating
+                              ? "text-yellow-400"
+                              : "text-base-content/20"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-base-content/60 ml-1">
+                      {review.rating.toFixed(1)}
+                    </span>
                   </div>
                 </div>
-                <p className="text-base-content">{review.review}</p>
+
+                {/* Review Text */}
+                <p className="text-base-content/90 pl-13">{review.review}</p>
               </div>
             ))}
           </div>
@@ -209,11 +279,16 @@ const AllPropertiesDetails = () => {
 
       {/* Agent Info */}
       <div className="bg-base-100 rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 className="text-2xl font-bold text-secondary mb-4">Agent Information</h3>
+        <h3 className="text-2xl font-bold text-secondary mb-4">
+          Agent Information
+        </h3>
         <div className="flex items-center gap-6">
           <div className="avatar">
             <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-              <img src={property.agentImage || "https://i.ibb.co/5GzXkwq/user.png"} alt={agentName} />
+              <img
+                src={property.agentImage || "https://i.ibb.co/5GzXkwq/user.png"}
+                alt={agentName}
+              />
             </div>
           </div>
           <div className="space-y-2">
@@ -224,7 +299,10 @@ const AllPropertiesDetails = () => {
             <p className="flex items-center gap-3 text-lg">
               <FaEnvelope className="text-primary" />
               <span className="font-medium">Email:</span>
-              <a href={`mailto:${agentEmail}`} className="text-primary hover:text-secondary transition-colors">
+              <a
+                href={`mailto:${agentEmail}`}
+                className="text-primary hover:text-secondary transition-colors"
+              >
                 {agentEmail}
               </a>
             </p>
@@ -238,14 +316,14 @@ const AllPropertiesDetails = () => {
           <div className="bg-base-100 rounded-2xl shadow-2xl p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold">Write Your Review</h3>
-              <button 
+              <button
                 onClick={() => setIsReviewModalOpen(false)}
                 className="btn btn-ghost btn-circle"
               >
                 <FaTimes className="text-lg" />
               </button>
             </div>
-            
+
             <div className="mb-6">
               <label className="block mb-3 font-medium text-lg">Rating</label>
               <div className="rating rating-lg">
@@ -261,9 +339,11 @@ const AllPropertiesDetails = () => {
                 ))}
               </div>
             </div>
-            
+
             <div className="mb-6">
-              <label className="block mb-3 font-medium text-lg">Your Review</label>
+              <label className="block mb-3 font-medium text-lg">
+                Your Review
+              </label>
               <textarea
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
@@ -271,15 +351,15 @@ const AllPropertiesDetails = () => {
                 placeholder="Share your experience with this property..."
               ></textarea>
             </div>
-            
+
             <div className="flex justify-end gap-4">
-              <button 
+              <button
                 onClick={() => setIsReviewModalOpen(false)}
                 className="btn btn-ghost px-6"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handleSubmitReview}
                 className="btn btn-primary px-6"
                 disabled={!reviewText.trim()}
