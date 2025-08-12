@@ -12,7 +12,6 @@ const LatestReview = () => {
     const fetchLatestReviews = async () => {
       try {
         const res = await axiosSecure.get("/reviews");
-        // Sort reviews by createdAt in descending order (newest first)
         const sortedReviews = res.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -30,24 +29,16 @@ const LatestReview = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="loading loading-spinner loading-lg text-primary"
-        ></motion.div>
+        <div className="loading loading-spinner loading-lg text-primary"></div>
       </div>
     );
   }
 
   if (!reviews.length) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="text-center py-16 bg-base-200 rounded-xl max-w-2xl mx-auto"
-      >
+      <div className="text-center py-16 bg-base-200 rounded-xl max-w-2xl mx-auto">
         <div className="flex justify-center mb-4">
-          <FaStar className="text-4xl text-primary animate-bounce" />
+          <FaStar className="text-4xl text-primary" />
         </div>
         <h3 className="text-xl font-medium text-base-content">
           No reviews yet
@@ -55,38 +46,21 @@ const LatestReview = () => {
         <p className="text-base-content/70 mt-2">
           Customer reviews will appear here once submitted
         </p>
-      </motion.div>
+      </div>
     );
   }
-
-  // Animation variants for review cards
-  const cardVariants = {
-    offscreen: {
-      y: 50,
-      opacity: 0,
-    },
-    onscreen: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        bounce: 0.4,
-        duration: 0.8,
-      },
-    },
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
         <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-          Customers <span className="text-secondary">Reviews</span>
+          Customers <span className="text-secondary animate-pulse">Reviews</span>
         </h2>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-4 rounded-full"></div>
         <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
@@ -98,11 +72,13 @@ const LatestReview = () => {
         {reviews.slice(0, 3).map((review, index) => (
           <motion.div
             key={review._id}
-            initial="offscreen"
-            whileInView="onscreen"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={cardVariants}
-            transition={{ delay: index * 0.1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ 
+              duration: 0.6,
+              delay: index * 0.1
+            }}
           >
             <div className="bg-base-100 rounded-box shadow-lg hover:shadow-xl transition-all duration-300 border border-base-200 h-full flex flex-col">
               <div className="p-6 flex-1">
