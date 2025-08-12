@@ -157,7 +157,7 @@ const ManageUser = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{user.name || "N/A"}</div>
+                      <div className="font-bold">{user.displayName || "N/A"}</div>
                     </div>
                   </div>
                 </td>
